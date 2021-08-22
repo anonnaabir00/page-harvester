@@ -19,15 +19,29 @@
 //   /**
 //    * frontend ajax requests.
 //    */
-//   wp_enqueue_script( 'post', plugin_dir_path( __FILE__ ) . 'post.js', array(), '1.0', true );
-//   wp_localize_script( 'post', 'phform_post',
-//       array( 
-//           'ajax_url' => admin_url( 'admin-ajax.php' ),      
-//       )
-//   );
+//   wp_enqueue_script( 'main', plugin_dir_path( __FILE__ ) . 'main.js', array('jquery'), '1.0', true );
+//   // wp_localize_script( 'post', 'phform_post',
+//   //     array( 
+//   //         'ajax_url' => admin_url( 'admin-ajax.php' ),      
+//   //     )
+//   // );
 // }
 
 // add_action( 'wp_enqueue_scripts', 'theme_enqueue_scripts' );
+
+
+function ph_assets(){
+  wp_enqueue_script( 'main', plugins_url( 'main.js', __FILE__ ), array('jquery','jquery-ui-core','jquery-ui-autocomplete'), '1.0', true );
+  wp_register_style( 'jquery_ui',    plugins_url( 'jquery-ui.css',    __FILE__ ), false, '1.0');
+  wp_enqueue_style ( 'jquery_ui' );
+  //   wp_localize_script( 'main', 'phform_post',
+  //     array( 
+  //         'ajax_url' => admin_url( 'admin-ajax.php' ),
+  //     )
+  // );
+}
+
+add_action( 'wp_enqueue_scripts', 'ph_assets' );
 
 
 
@@ -65,7 +79,7 @@
 function page_harvester_search_form($attributes){
     $form_label = $attributes['form_label'];
 
-    $form_output = '<form method="post">
+    $form_output = '<form method="post" name="phterm_form">
     <label for="phterm">'.$form_label.'</label><br>
     <input type="text" id="phterm" name="phterm"><br>
     <input id="submit" type="submit" name="submit" value="Submit">
@@ -87,15 +101,17 @@ function page_harvester_search_form($attributes){
     );
     //insert the the post into database by passing $new_post to wp_insert_post
     //store our post ID in a variable $pid
-    if(isset($_POST['submit'])){
+    if(isset($_POST['submit']) && $_POST['phterm'] != "" ){
       $pid = wp_insert_post($new_post);
       $form_action= get_permalink($pid);
-      ?><script>window.location.replace("<?php echo $form_action;?>");</script> <?php
+      ?><script>
+      window.location.replace("<?php echo $form_action;?>");
+      </script> <?php
        // echo $form_action;
       // wp_redirect( 'https://example.com/some/page' );
       // die();
       // wp_redirect($form_action);
-  } 
+  }
 
   // $form_action='http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
@@ -112,13 +128,3 @@ print_r($form_action);
 add_shortcode('phform','page_harvester_search_form');
 
 
-// function ph_assets(){
-//   wp_enqueue_script( 'main', plugins_url( 'main.js', __FILE__ ), array('jquery'), '1.0', true );
-//     wp_localize_script( 'main', 'phform_post',
-//       array( 
-//           'ajax_url' => admin_url( 'admin-ajax.php' ),
-//       )
-//   );
-// }
-
-// add_action( 'wp_enqueue_scripts', 'ph_assets' );
