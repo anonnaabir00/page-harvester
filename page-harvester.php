@@ -28,17 +28,18 @@
 // }
 
 // add_action( 'wp_enqueue_scripts', 'theme_enqueue_scripts' );
+require_once('functions.php');
 
 
 function ph_assets(){
-  wp_enqueue_script( 'main', plugins_url( 'main.js', __FILE__ ), array('jquery','jquery-ui-core','jquery-ui-autocomplete'), '1.0', true );
+  $options = get_option( 'page_harvester' ); // unique id of the framework
+  $res = preg_replace('/[^A-Za-z0-9\-, ]/', '', $options['ph-data-list']);
+  $data_list = explode(",",$res);
+
   wp_register_style( 'jquery_ui',    plugins_url( 'jquery-ui.css',    __FILE__ ), false, '1.0');
   wp_enqueue_style ( 'jquery_ui' );
-  //   wp_localize_script( 'main', 'phform_post',
-  //     array( 
-  //         'ajax_url' => admin_url( 'admin-ajax.php' ),
-  //     )
-  // );
+  wp_enqueue_script( 'main', plugins_url( 'main.js', __FILE__ ), array('jquery','jquery-ui-core','jquery-ui-autocomplete'), '1.0', true );
+  wp_localize_script( 'main', 'phform_post',$data_list);
 }
 
 add_action( 'wp_enqueue_scripts', 'ph_assets' );
@@ -77,6 +78,20 @@ add_action( 'wp_enqueue_scripts', 'ph_assets' );
 
 
 function page_harvester_search_form($attributes){
+  $options = get_option( 'page_harvester' );
+  // var_dump($options['ph-post-titles']);
+  // echo $options['ph-post-titles'];
+  $words = array_column($options['ph-post-titles'],'ph-post-titles-text');
+
+  // $words = array(
+  //   'Dumpster rental service in ',
+  //   'Rent Dumpster in ',
+  //   'Best Dumpster Service in ');
+
+    var_dump($words);
+    
+  // echo $words[rand(0, count($words)-1)];
+
     $form_label = $attributes['form_label'];
 
     $form_output = '<form method="post" name="phterm_form">
@@ -86,8 +101,10 @@ function page_harvester_search_form($attributes){
     </form>
   ';
 
+  $before_data = $words[rand(0, count($words)-1)];
 
-    $post_title = 'Dumpster rental service in '.$_POST['phterm'];
+    $post_title = $words[rand(0, count($words)-1)].' '.$_POST['phterm'];
+    // $post_title = 'Dumpster rental service in '.$_POST['phterm'];
     $post_content = '
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
     <div class="wp-block-button"><a class="wp-block-button__link">Download Now</a></div>
