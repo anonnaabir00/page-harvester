@@ -1,71 +1,54 @@
 //   allCities = [];
 
-  jQuery.getJSON("https://gist.githubusercontent.com/ahmu83/38865147cf3727d221941a2ef8c22a77/raw/c647f74643c0b3f8407c28ddbb599e9f594365ca/US_States_and_Cities.json", function(result){
-    //   console.log(result);
-      New_York = result['New York'];
-      California = result['California'];
-      allCities = jQuery.merge(New_York,California);
-      console.log(allCities);
-      jQuery( function() {
-        // var availableTags = [
-        //   "ActionScript",
-        //   "AppleScript",
-        //   "Asp",
-        //   "BASIC",
-        //   "C",
-        //   "C++",
-        //   "Clojure",
-        //   "COBOL",
-        //   "ColdFusion",
-        //   "Erlang",
-        //   "Fortran",
-        //   "Groovy",
-        //   "Haskell",
-        //   "Java",
-        //   "JavaScript",
-        //   "Lisp",
-        //   "Perl",
-        //   "PHP",
-        //   "Python",
-        //   "Ruby",
-        //   "Scala",
-        //   "Scheme"
-        // ];
-        jQuery( "#phterm" ).autocomplete({
-          source: allCities
-        });
-      } );
-  });
+console.log(phform_post);
+allCities = phform_post;
 
-// jQuery( function() {
-//     var availableTags = [
-//       "ActionScript",
-//       "AppleScript",
-//       "Asp",
-//       "BASIC",
-//       "C",
-//       "C++",
-//       "Clojure",
-//       "COBOL",
-//       "ColdFusion",
-//       "Erlang",
-//       "Fortran",
-//       "Groovy",
-//       "Haskell",
-//       "Java",
-//       "JavaScript",
-//       "Lisp",
-//       "Perl",
-//       "PHP",
-//       "Python",
-//       "Ruby",
-//       "Scala",
-//       "Scheme"
-//     ];
-//     jQuery( "#phterm" ).autocomplete({
-//       source: allCities
-//     });
-//   } );
+  // jQuery.getJSON("/data.json", function(result){
+  //   //   console.log(result);
+  //     New_York = result['New York'];
+  //     California = result['California'];
+  //     allCities = jQuery.merge(New_York,California);
+  //     // console.log(allCities);
+  //     jQuery( function() {
+  //       // var availableTags = [
+  //       //   "ActionScript",
+  //       //   "AppleScript",
+  //       //   "Asp",
+  //       //   "BASIC",
+  //       //   "C",
+  //       //   "C++",
+  //       //   "Clojure",
+  //       //   "COBOL",
+  //       //   "ColdFusion",
+  //       //   "Erlang",
+  //       //   "Fortran",
+  //       //   "Groovy",
+  //       //   "Haskell",
+  //       //   "Java",
+  //       //   "JavaScript",
+  //       //   "Lisp",
+  //       //   "Perl",
+  //       //   "PHP",
+  //       //   "Python",
+  //       //   "Ruby",
+  //       //   "Scala",
+  //       //   "Scheme"
+  //       // ];
+  //       jQuery( "#phterm" ).autocomplete({
+  //         source: allCities,
+  //         minLength: 2,
+  //         autoFocus: true
+  //       });
+  //     } );
+  // });
+
+jQuery( function() {
+    jQuery( "#phterm" ).autocomplete({
+      source: allCities,
+      minLength: 2,
+      autoFocus: true
+    });
+  } );
 
 
   function validateForm() {
