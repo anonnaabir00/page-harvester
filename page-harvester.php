@@ -81,14 +81,23 @@ function page_harvester_search_form($attributes){
   $options = get_option( 'page_harvester' );
   // var_dump($options['ph-post-titles']);
   // echo $options['ph-post-titles'];
-  $words = array_column($options['ph-post-titles'],'ph-post-titles-text');
+  if (!empty($options['ph-post-titles'])) {
+    $before_words = array_column($options['ph-post-titles'],'ph-post-titles-text');
+    $before_data = $before_words[rand(0, count($before_words)-1)]; 
+  }
+
+  if (!empty($options['ph-post-titles_after'])) {
+    $after_words = array_column($options['ph-post-titles_after'],'ph_post_titles_text_after');
+    $after_data = $after_words[rand(0, count($after_words)-1)];
+  }
 
   // $words = array(
   //   'Dumpster rental service in ',
   //   'Rent Dumpster in ',
   //   'Best Dumpster Service in ');
 
-    var_dump($words);
+    // var_dump($before_words);
+    // var_dump($after_words);
     
   // echo $words[rand(0, count($words)-1)];
 
@@ -101,9 +110,7 @@ function page_harvester_search_form($attributes){
     </form>
   ';
 
-  $before_data = $words[rand(0, count($words)-1)];
-
-    $post_title = $words[rand(0, count($words)-1)].' '.$_POST['phterm'];
+    $post_title = $before_data.' '.$_POST['phterm'].' '.$after_data;
     // $post_title = 'Dumpster rental service in '.$_POST['phterm'];
     $post_content = '
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>

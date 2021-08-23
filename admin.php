@@ -15,6 +15,7 @@ if( class_exists( 'CSF' ) ) {
     CSF::createOptions( $prefix, array(
       'menu_title' => 'Page Harvester',
       'menu_slug'  => 'page-harvester',
+      'framework_title' => 'Page Harvester'
     ) );
   
     //
@@ -52,7 +53,7 @@ if( class_exists( 'CSF' ) ) {
             'fields' => array(
           
               array(
-                'id'    => 'ph-post-titles-text',
+                'id'    => 'ph_post_titles_text_after',
                 'type'  => 'text',
                 'title' => 'After Title'
               ),
