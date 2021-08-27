@@ -60,6 +60,14 @@ if( class_exists( 'CSF' ) ) {
           
             ),
           ),
+
+
+          array(
+            'id'    => 'ph-post-content',
+            'type'  => 'wp_editor',
+            'title' => 'Post Content',
+          ),
+          
           
           
   
