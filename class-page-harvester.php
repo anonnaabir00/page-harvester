@@ -1,11 +1,28 @@
 <?php
 
+/**
+ * Plugin Name:       Page Harvester
+ * Plugin URI:        https://codember.com
+ * Description:       Fully functional Page Harvester plugin for WordPress. This plugin allows you to create pages automatically based on search query.
+ * Version:           1.0
+ * Requires at least: 5.2
+ * Requires PHP:      7.2
+ * Author:            Asaduzzaman Abir
+ * Author URI:        https://iamabir.com
+ * License:           GPL v2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       page-harvester
+ * Domain Path:       /languages
+ */
+
+
         if (! class_exists ('Page_Harvester') ) {
 
             Class Page_Harvester {
 
                 public function __construct(){
-                    require_once('functions.php');
+                    require_once plugin_dir_path( __FILE__ ).'csf/codestar-framework.php';
+                    require_once plugin_dir_path( __FILE__ ).'admin.php';
                     add_action( 'wp_enqueue_scripts', array($this,'ph_assets'));
                     add_shortcode('phform', array($this,'page_harvester_search_form'));
                     add_shortcode('phform_search_term', array($this,'page_harvester_search_term'));
