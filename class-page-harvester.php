@@ -26,6 +26,9 @@
                     add_action( 'wp_enqueue_scripts', array($this,'ph_assets'));
                     add_shortcode('phform', array($this,'page_harvester_search_form'));
                     add_shortcode('phform_search_term', array($this,'page_harvester_search_term'));
+                    add_filter( 'pre_get_document_title', array($this, 'page_harvester_meta_informations'));
+                    add_filter( 'wp_head', array($this, 'page_harvester_meta_description'));
+                    // add_filter('the_title', 'wpshout_filter_example');
                 }
 
 
@@ -33,7 +36,9 @@
                     $options = get_option( 'page_harvester' ); // unique id of the framework
                     $res = preg_replace('/[^A-Za-z0-9\-, ]/', '', $options['ph-data-list']);
                     $data_list = explode(",",$res);
-                  
+                    
+                    wp_register_style( 'core',    plugins_url( 'core.css',    __FILE__ ), false, '1.0');
+                    wp_enqueue_style ( 'core' );
                     wp_register_style( 'jquery_ui',    plugins_url( 'jquery-ui.css',    __FILE__ ), false, '1.0');
                     wp_enqueue_style ( 'jquery_ui' );
                     wp_enqueue_script( 'main', plugins_url( 'main.js', __FILE__ ), array('jquery','jquery-ui-core','jquery-ui-autocomplete'), '1.0', true );
@@ -56,12 +61,15 @@
                     }
                   
                   
-                      $form_label = $attributes['form_label'];
+                      // $form_label = $attributes['form_label'];
+                      $button_label = $attributes['button_label'];
                   
-                      $form_output = '<form method="post" name="phterm_form">
-                      <label for="phterm">'.$form_label.'</label><br>
+                      $form_output = '
+                      <form method="post" name="phterm_form">
+                      <div class="phterm_wrapper">
                       <input type="text" id="phterm" name="phterm"><br>
-                      <input id="submit" type="submit" name="submit" value="Submit">
+                      <input id="ph_submit" type="submit" name="ph_submit" value="'.$button_label.'">
+                      </div>
                       </form>
                     ';
                   
@@ -79,7 +87,7 @@
                       );
                       //insert the the post into database by passing $new_post to wp_insert_post
                       //store our post ID in a variable $pid
-                      if(isset($_POST['submit']) && $_POST['phterm'] != "" ){
+                      if(isset($_POST['ph_submit']) && $_POST['phterm'] != "" ){
                         $pid = wp_insert_post($new_post);
                         $form_action= get_permalink($pid);
                         ?><script>
@@ -102,11 +110,39 @@
                   }
 
 
+                  public function page_harvester_meta_description() {
+                    $options = get_option( 'page_harvester' );
+
+                    $post_tags = get_the_tags();
+                    if ($post_tags) {
+                      $post_tag = $post_tags[0]->name; 
+                    }
+
+                    $meta_description_start = $options['ph_meta_description_start'];
+                    $meta_description_end = $options['ph_meta_description_end'];
+
+                    if ( is_single() ) {
+                      echo '<meta name="description" content="'.$meta_description_start.' '.$post_tag.' '.$meta_description_end.'" />';
+                    }
+                }     
+                
+                public function page_harvester_meta_informations($title) {
+                  $options = get_option( 'page_harvester' );
+                  $post_tags = get_the_tags();
+                    if ($post_tags) {
+                      $post_tag = $post_tags[0]->name; 
+                    }
+
+                  $meta_title = $options['ph_meta_title_start'].' '.$post_tag.' | '.$options['ph_meta_title_end'];
+                  
+                  if (is_single()) {
+                    return $meta_title;
+                  }
+                }
+
+
             }
 
             $page_harvester = new Page_Harvester();
             
         }
-
-        
-      
