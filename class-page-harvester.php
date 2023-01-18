@@ -69,6 +69,7 @@
                     'post_title'    => wp_strip_all_tags($value->post_title),
                     'post_content'  => $value->post_content,
                     'post_status'   => 'publish',
+                    'page_template'  => 'elementor_header_footer',
                     'post_author'   => 1,
                 );
                 
