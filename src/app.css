@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.brand-color {
+    background-color: #1C6940;
+}
+
+.brand-color-2 {
+    background-color: #FAC403;
+}
