@@ -4,7 +4,7 @@
  * Plugin Name:       Page Harvester
  * Plugin URI:        https://codember.com
  * Description:       Fully functional Page Harvester plugin for WordPress. This plugin allows you to create pages automatically based on search query.
- * Version:           1.1
+ * Version:           2.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Asaduzzaman Abir
@@ -21,125 +21,70 @@
             Class Page_Harvester {
 
                 public function __construct(){
-                    require_once plugin_dir_path( __FILE__ ).'csf/codestar-framework.php';
-                    require_once plugin_dir_path( __FILE__ ).'admin.php';
-                    add_action( 'wp_enqueue_scripts', array($this,'ph_assets'));
-                    add_shortcode('phform', array($this,'page_harvester_search_form'));
-                    add_shortcode('phform_search_term', array($this,'page_harvester_search_term'));
-                    add_filter( 'pre_get_document_title', array($this, 'page_harvester_meta_informations'));
-                    add_filter( 'wp_head', array($this, 'page_harvester_meta_description'));
-                    // add_filter('the_title', 'wpshout_filter_example');
+                    add_action('admin_menu', array( $this,'ph_admin_menu'));
+                    add_action( 'admin_enqueue_scripts', array($this,'ph_admin_assets'));
+                    add_action( 'rest_api_init', array( $this, 'ph_insert_dumpster_post' ));
                 }
 
+                public function ph_admin_assets(){
+                    $current_screen = get_current_screen();
+                    $admin_screen = 'toplevel_page_ph_admin';
 
-                public function ph_assets(){
-                    $options = get_option( 'page_harvester' ); // unique id of the framework
-                    $res = preg_replace('/[^A-Za-z0-9\-, ]/', '', $options['ph-data-list']);
-                    $data_list = explode(",",$res);
-                    
-                    wp_register_style( 'core',    plugins_url( 'core.css',    __FILE__ ), false, '1.0');
-                    wp_enqueue_style ( 'core' );
-                    wp_register_style( 'jquery_ui',    plugins_url( 'jquery-ui.css',    __FILE__ ), false, '1.0');
-                    wp_enqueue_style ( 'jquery_ui' );
-                    wp_enqueue_script( 'main', plugins_url( 'main.js', __FILE__ ), array('jquery','jquery-ui-core','jquery-ui-autocomplete'), '1.0', true );
-                    wp_localize_script( 'main', 'phform_post',$data_list);
-                  }
-
-
-                  public function page_harvester_search_form($attributes){
-
-                    $options = get_option( 'page_harvester' );
-                    
-                    if (!empty($options['ph-post-titles'])) {
-                      $before_words = array_column($options['ph-post-titles'],'ph-post-titles-text');
-                      $before_data = $before_words[rand(0, count($before_words)-1)]; 
+                    if ($admin_screen == $current_screen->base) {
+                        wp_enqueue_style( 'app', plugins_url( 'assets/app.css', __FILE__ ) );
+                        wp_enqueue_style( 'main', plugins_url( 'assets/main.css', __FILE__ ) );
+                        wp_enqueue_script( 'admin', plugins_url( 'assets/main.js', __FILE__ ), [], '1.0', true );
                     }
-                  
-                    if (!empty($options['ph-post-titles_after'])) {
-                      $after_words = array_column($options['ph-post-titles_after'],'ph_post_titles_text_after');
-                      $after_data = $after_words[rand(0, count($after_words)-1)];
-                    }
-                  
-                  
-                      // $form_label = $attributes['form_label'];
-                      $button_label = $attributes['button_label'];
-                  
-                      $form_output = '
-                      <form method="post" name="phterm_form">
-                      <div class="phterm_wrapper">
-                      <input type="text" id="phterm" name="phterm"><br>
-                      <input id="ph_submit" type="submit" name="ph_submit" value="'.$button_label.'">
-                      </div>
-                      </form>
-                    ';
-                  
-                      
-                      $post_content = $options['ph-post-content'];
-                  
-                      $post_title = $before_data.' '.$_POST['phterm'].' '.$after_data;
-                    
-                      $new_post = array(
-                      'post_title'    => $post_title,
-                      'post_content'  => $post_content,
-                      'post_status'   => 'publish',        
-                      'post_type'     => 'post',
-                      'tags_input'    => $_POST['phterm']
-                      );
-                      //insert the the post into database by passing $new_post to wp_insert_post
-                      //store our post ID in a variable $pid
-                      if(isset($_POST['ph_submit']) && $_POST['phterm'] != "" ){
-                        $pid = wp_insert_post($new_post);
-                        $form_action= get_permalink($pid);
-                        ?><script>
-                        window.location.replace("<?php echo $form_action;?>");
-                        </script> <?php
-                    }
-                  
-                  
-                    return $form_output;
+                }
 
-                  }
+                public function ph_admin_menu() {
+                  $page_title = 'GEO Page Harvester';
+                  $menu_title = 'Geo Page Harvester';
+                  $capability = 'manage_options';
+                  $slug = 'ph_admin';
+                  $icon_url =  'dashicons-admin-site-alt2';
+                  
+                  add_menu_page(__( $page_title, 'page-harvester' ),$menu_title,$capability,$slug,array( $this,'ph_settings_content'),$icon_url, 99);
+      
+              }
+          
+              public function ph_settings_content() {
+                  ?>
+                  <div id="ph-admin"></div>
+                  <?php
+              }
 
-
-                  public function page_harvester_search_term($attributes) {
-                    $post_tags = get_the_tags();
-                    if ( $post_tags ) {
-                      $output = $post_tags[0]->name; 
-                    }
-                    return $output;
-                  }
-
-
-                  public function page_harvester_meta_description() {
-                    $options = get_option( 'page_harvester' );
-
-                    $post_tags = get_the_tags();
-                    if ($post_tags) {
-                      $post_tag = $post_tags[0]->name; 
-                    }
-
-                    $meta_description_start = $options['ph_meta_description_start'];
-                    $meta_description_end = $options['ph_meta_description_end'];
-
-                    if ( is_single() ) {
-                      echo '<meta name="description" content="'.$meta_description_start.' '.$post_tag.' '.$meta_description_end.'" />';
-                    }
-                }     
+            public function ph_insert_dumpster_post(){
+                register_rest_route( 'ph/v1', '/geo/dumpster', array(
+                    'methods' => 'POST',
+                    'callback' => array( $this, 'ph_insert_dumpster_rest_callback' ),
+                ));
+            }
+    
+            public function ph_insert_dumpster_rest_callback(WP_REST_Request $request){
+                $value = json_decode($request->get_body());
                 
-                public function page_harvester_meta_informations($title) {
-                  $options = get_option( 'page_harvester' );
-                  $post_tags = get_the_tags();
-                    if ($post_tags) {
-                      $post_tag = $post_tags[0]->name; 
-                    }
+                // Create post object
+                $my_post = array(
+                    'post_title'    => wp_strip_all_tags($value->post_title),
+                    'post_content'  => $value->post_content,
+                    'post_status'   => 'publish',
+                    'post_author'   => 1,
+                );
+                
+                // Insert the post into the database and get id
+                $post_id = wp_insert_post($my_post);
 
-                  $meta_title = $options['ph_meta_title_start'].' '.$post_tag.' | '.$options['ph_meta_title_end'];
-                  
-                  if (is_single()) {
-                    return $meta_title;
-                  }
-                }
+                // Update ACF meta field
+                $meta_selector = 'location_name';
+                $meta_value = $value->location;
+                update_field($meta_selector, $meta_value, $post_id);
 
+                // Get Post Permalink
+                $post_url = get_permalink($post_id);
+
+                return $post_url;
+            }
 
             }
 
