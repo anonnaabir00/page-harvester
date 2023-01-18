@@ -1,0 +1,27 @@
+{
+  "name": "page-harvester",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "watch": "vite build --watch"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "sweetalert2": "^11.7.0",
+    "vue-router": "^3.6.5",
+    "vuesax": "^4.0.1-alpha.25"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue2": "^1.1.2",
+    "@wordpress/scripts": "^24.1.0",
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.4",
+    "vite": "^4.0.0",
+    "vue": "^2.7.10"
+  }
+}
