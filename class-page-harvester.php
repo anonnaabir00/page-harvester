@@ -33,8 +33,8 @@
 
                     if ($admin_screen == $current_screen->base) {
                         wp_enqueue_style( 'app', plugins_url( 'assets/app.css', __FILE__ ) );
-                        wp_enqueue_style( 'main', plugins_url( 'assets/main.css', __FILE__ ) );
-                        wp_enqueue_script( 'admin', plugins_url( 'assets/main.js', __FILE__ ), [], '1.0', true );
+                        wp_enqueue_style( 'main', plugins_url( 'assets/admin.css', __FILE__ ) );
+                        wp_enqueue_script( 'admin', plugins_url( 'assets/admin.js', __FILE__ ), [], '3.0', true );
                     }
                 }
 
