@@ -5,10 +5,10 @@
             <h2 class="text-black text-xl pt-2 pb-4">Porta Potty GEO Page</h2>
             <div class="grid grid-cols-1 gap-4 w-2/6">
                 <label for="city">City State</label>
-                <input v-model="city" name="city" type="text" />
+                <input v-model="city" name="city" placeholder="Desoto TX" type="text" />
 
                 <label for="zip">ZIP Code</label>
-                <input v-model="zip" name="zip" type="text">
+                <input v-model="zip" name="zip" placeholder="60001" type="text">
 
                 <label for="information">City Information</label>
                 <textarea v-model="information" name="information" rows="6" cols="50"></textarea>

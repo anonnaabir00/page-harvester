@@ -5,13 +5,13 @@
             <h2 class="text-black text-xl pt-2 pb-4">Porta Potty Ads Page</h2>
             <div class="grid grid-cols-1 gap-4 w-2/6">
                 <label for="city">City State</label>
-                <input v-model="city" name="city" type="text" />
+                <input v-model="city" name="city" placeholder="Desoto TX" type="text" />
 
                 <label for="placeholder">Phone Number Placeholder</label>
-                <input v-model="placeholder" name="placeholder" type="text">
+                <input v-model="placeholder" name="placeholder" placeholder="(469) 281-6668" type="text">
 
                 <label for="phone">Phone Number</label>
-                <input v-model="phone" name="phone" type="text">
+                <input v-model="phone" name="phone" placeholder="4692816668" type="text">
 
                 <label for="phoneads">Adword Code (Phone Number)</label>
                 <textarea v-model="phoneads" name="phoneads" rows="4" cols="50"></textarea>

@@ -4,7 +4,7 @@
  * Plugin Name:       Page Harvester
  * Plugin URI:        https://codember.com
  * Description:       Fully functional Page Harvester plugin for WordPress. This plugin allows you to create pages automatically based on search query.
- * Version:           3.3
+ * Version:           3.5
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Asaduzzaman Abir
@@ -34,7 +34,7 @@
                     if ($admin_screen == $current_screen->base) {
                         wp_enqueue_style( 'app', plugins_url( 'assets/app.css', __FILE__ ) );
                         wp_enqueue_style( 'main', plugins_url( 'assets/admin.css', __FILE__ ) );
-                        wp_enqueue_script( 'admin', plugins_url( 'assets/admin.js', __FILE__ ), [], '3.0', true );
+                        wp_enqueue_script( 'admin', plugins_url( 'assets/admin.js', __FILE__ ), [], '4.0', true );
                     }
                 }
 
@@ -53,8 +53,8 @@
                     array( $this,'ph_settings_content'),$icon_url, 99);
 
                     add_submenu_page( 
-                        $slug, __( 'Dumpster Pages', 'page-harvester' ), 
-                        __( 'Dumpster Pages', 'page-harvester' ),
+                        $slug, __( 'Dumpster Adwords', 'page-harvester' ), 
+                        __( 'Dumpster Adwords', 'page-harvester' ),
                         $capability,
                         $slug,
                         array( $this,'ph_settings_content' ) );
@@ -67,8 +67,8 @@
                             array( $this,'ph_settings_content' ) );
 
                   add_submenu_page( 
-                    $slug, __( 'Porta Potty Pages', 'page-harvester' ), 
-                    __( 'Porta Potty Pages', 'page-harvester' ),
+                    $slug, __( 'Porta Potty Adwords', 'page-harvester' ), 
+                    __( 'Porta Potty Adwords', 'page-harvester' ),
                     $capability,
                     'page_harvester#/porta-potty',
                     array( $this,'ph_settings_content' ) );
