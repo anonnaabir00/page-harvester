@@ -17,7 +17,9 @@ const routes = [
     { path: '/porta-potty-geo', component: PortaPottyGEO },
 ]
 
-const router = new VueRouter({routes})
+const router = new VueRouter({
+    routes: routes
+});
 
 
 new Vue({
