@@ -4,7 +4,7 @@
  * Plugin Name:       Page Harvester
  * Plugin URI:        https://codember.com
  * Description:       Fully functional Page Harvester plugin for WordPress. This plugin allows you to create pages automatically based on search query.
- * Version:           3.0
+ * Version:           3.1
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Asaduzzaman Abir
@@ -29,7 +29,7 @@
 
                 public function ph_admin_assets(){
                     $current_screen = get_current_screen();
-                    $admin_screen = 'toplevel_page_ph_admin';
+                    $admin_screen = 'toplevel_page_page_harvester';
 
                     if ($admin_screen == $current_screen->base) {
                         wp_enqueue_style( 'app', plugins_url( 'assets/app.css', __FILE__ ) );
@@ -42,7 +42,7 @@
                   $page_title = 'GEO Page Harvester';
                   $menu_title = 'Geo Page Harvester';
                   $capability = 'manage_options';
-                  $slug = 'ph_admin';
+                  $slug = 'page_harvester';
                   $icon_url =  'dashicons-admin-site-alt2';
                   
                   add_menu_page(
@@ -63,22 +63,23 @@
                             $slug, __( 'Dumpster GEO', 'page-harvester' ), 
                             __( 'Dumpster GEO', 'page-harvester' ),
                             $capability,
-                            'ph_admin#/dumpster-geo',
+                            'page_harvester#/dumpster-geo',
                             array( $this,'ph_settings_content' ) );
 
                   add_submenu_page( 
                     $slug, __( 'Porta Potty Pages', 'page-harvester' ), 
                     __( 'Porta Potty Pages', 'page-harvester' ),
                     $capability,
-                    'ph_admin#/porta-potty',
+                    'page_harvester#/porta-potty',
                     array( $this,'ph_settings_content' ) );
 
                     add_submenu_page( 
                         $slug, __( 'Porta Potty GEO', 'page-harvester' ), 
                         __( 'Porta Potty GEO', 'page-harvester' ),
                         $capability,
-                        'ph_admin#/porta-potty-geo',
-                        array( $this,'ph_settings_content' ) );
+                        'page_harvester#/porta-potty-geo',
+                        array( $this,'ph_settings_content' ) 
+                    );
       
               }
           
