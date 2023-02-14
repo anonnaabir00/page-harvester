@@ -10,6 +10,12 @@
                 <label for="zip">ZIP Code</label>
                 <input v-model="zip" name="zip" placeholder="60001" type="text">
 
+                <label for="placeholder">Phone Number Placeholder</label>
+                <input v-model="placeholder" name="placeholder" placeholder="(469) 281-6668" type="text">
+
+                <label for="phone">Phone Number</label>
+                <input v-model="phone" name="phone" placeholder="4692816668" type="text">
+
                 <label for="information">City Information</label>
                 <textarea v-model="information" name="information" rows="6" cols="50"></textarea>
 
@@ -38,6 +44,8 @@ data() {
     return {
         city: null,
         zip: null,
+        placeholder: null,
+        phone: null,
         information: null,
     }
 },
@@ -58,6 +66,8 @@ methods: {
                 post_title: 'Dumpster Rental ' +  this.city + ' ' + this.zip,
                 post_content: content,
                 location: this.city + ' ' + this.zip,
+                placeholder: this.placeholder,
+                phone: this.phone,
                 information: this.information,
             }
         }).then (response => {

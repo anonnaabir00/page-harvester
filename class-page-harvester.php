@@ -173,9 +173,13 @@
 
                 // Update ACF meta field
                 $location = 'location_name';
+                $phone = 'phone_number';
+                $phone_placeholder = 'phone_number_placeholder';
                 $city_information = 'city_information';
 
                 update_field($location, $value->location, $post_id);
+                update_field($phone, $value->phone, $post_id);
+                update_field($phone_placeholder, $value->placeholder, $post_id);
                 update_field($city_information, $value->information, $post_id);
 
                 // Get Post Permalink
