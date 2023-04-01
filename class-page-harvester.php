@@ -4,7 +4,7 @@
  * Plugin Name:       Page Harvester
  * Plugin URI:        https://codember.com
  * Description:       Fully functional Page Harvester plugin for WordPress. This plugin allows you to create pages automatically based on search query.
- * Version:           3.8
+ * Version:           4.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Asaduzzaman Abir
@@ -25,6 +25,9 @@
                     add_action('admin_menu', array( $this,'ph_admin_menu'));
                     add_action( 'admin_enqueue_scripts', array($this,'ph_admin_assets'));
                     add_action( 'rest_api_init', array( $this, 'ph_insert_dumpster_post' ));
+                    // add_filter( 'template_include', array($this,'ph_404_template' ));
+
+                    // require_once( plugin_dir_path( __FILE__ ) . 'functions.php' );
                 }
 
                 public function ph_admin_assets(){
@@ -36,6 +39,19 @@
                         wp_enqueue_style( 'main', plugins_url( 'assets/admin.css', __FILE__ ) );
                         wp_enqueue_script( 'admin', plugins_url( 'assets/admin.js', __FILE__ ), [], '8.0', true );
                     }
+                }
+                
+                public function ph_404_template( $template ) {
+                    if ( is_404() ) {
+                        $template = plugin_dir_path( __FILE__ ) . '404.php';
+                    }
+                    return $template;
+                }
+
+                public function ph_handle_404(){
+                    wp_redirect( home_url( '/porta-potty/' ) );
+                    exit;
+                    // return FALSE;
                 }
 
                 public function ph_admin_menu() {
@@ -80,6 +96,14 @@
                         'page_harvester#/porta-potty-geo',
                         array( $this,'ph_settings_content' ) 
                     );
+
+                    add_submenu_page( 
+                        $slug, __( 'GEO Pages Export', 'page-harvester' ), 
+                        __( 'GEO Pages Export', 'page-harvester' ),
+                        $capability,
+                        'page_harvester#/export',
+                        array( $this,'ph_settings_content' ) 
+                    );
       
               }
           
@@ -109,6 +133,17 @@
                 register_rest_route( 'ph/v1', '/porta-potty/geo', array(
                     'methods' => 'POST',
                     'callback' => array( $this, 'ph_insert_portapotty_rest_callback' ),
+                ));
+
+
+                register_rest_route( 'ph/v1', '/dumpster/geo/export', array(
+                    'methods' => 'GET',
+                    'callback' => array( $this, 'ph_export_dumpster_callback' ),
+                ));
+
+                register_rest_route( 'ph/v1', '/porta-potty/geo/export', array(
+                    'methods' => 'GET',
+                    'callback' => array( $this, 'ph_export_portapotty_callback' ),
                 ));
             }
 
@@ -176,11 +211,13 @@
                 $phone = 'phone_number';
                 $phone_placeholder = 'phone_number_placeholder';
                 $city_information = 'city_information';
+                $schema_code = 'schema_code';
 
                 update_field($location, $value->location, $post_id);
                 update_field($phone, 'tel:'.$value->phone, $post_id);
                 update_field($phone_placeholder, $value->placeholder, $post_id);
                 update_field($city_information, $value->information, $post_id);
+                update_field($schema_code, $value->schema, $post_id);
 
                 // Get Post Permalink
                 $post_url = get_permalink($post_id);
@@ -254,16 +291,53 @@
                 $phone = 'phone_number';
                 $phone_placeholder = 'phone_number_placeholder';
                 $city_information = 'city_information';
+                $schema_code = 'schema_code';
 
                 update_field($location, $value->location, $post_id);
                 update_field($phone, 'tel:'.$value->phone, $post_id);
                 update_field($phone_placeholder, $value->placeholder, $post_id);
                 update_field($city_information, $value->information, $post_id);
+                update_field($schema_code, $value->schema, $post_id);
 
                 // Get Post Permalink
                 $post_url = get_permalink($post_id);
 
                 return $post_url;
+            }
+
+            public function ph_export_dumpster_callback(WP_REST_Request $request){
+                // get all posts  link from dumpster page
+                $args = array(
+                    'post_type' => 'post',
+                    'post_status' => 'publish',
+                    'posts_per_page' => -1,
+                );
+                $posts = get_posts($args);
+                $data = array();
+                foreach($posts as $post){
+                    $data[] = get_permalink($post->ID);
+                }
+
+                
+                return $data;
+            }
+
+
+            public function ph_export_portapotty_callback(WP_REST_Request $request){
+                // get all posts  link from dumpster page
+                $args = array(
+                    'post_type' => 'porta_potty_geo_page',
+                    'post_status' => 'publish',
+                    'posts_per_page' => -1,
+                );
+                $posts = get_posts($args);
+                $data = array();
+                foreach($posts as $post){
+                    $data[] = get_permalink($post->ID);
+                }
+
+                
+                return $data;
             }
 
             }

@@ -19,6 +19,9 @@
                 <label for="information">City Information</label>
                 <textarea v-model="information" name="information" rows="6" cols="50"></textarea>
 
+                <label for="schema">Schema Data</label>
+                <textarea v-model="schema" name="schema" rows="6" cols="50"></textarea>
+
                 <button @click="this.addPortaPottyGeo" class="p-6 brand-color text-white text-base">Generate Porta Potty GEO Page</button>
             </div>
         </div>
@@ -47,6 +50,7 @@ data() {
         placeholder: null,
         phone: null,
         information: null,
+        schema: null,
     }
 },
 methods: {
@@ -67,6 +71,7 @@ methods: {
                 post_content: content,
                 location: this.city + ' ' + this.zip,
                 information: this.information,
+                schema: this.schema,
             }
         }).then (response => {
             loading.close();
