@@ -4,7 +4,7 @@
  * Plugin Name:       Page Harvester
  * Plugin URI:        https://codember.com
  * Description:       Fully functional Page Harvester plugin for WordPress. This plugin allows you to create pages automatically based on search query.
- * Version:           4.0
+ * Version:           5.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Asaduzzaman Abir
@@ -22,6 +22,9 @@
 
                 public function __construct(){
                     require_once( plugin_dir_path( __FILE__ ) . 'geo-page.php' );
+                    require_once( plugin_dir_path( __FILE__ ) . 'class-seo-widgets.php' );
+
+
                     add_action('admin_menu', array( $this,'ph_admin_menu'));
                     add_action( 'admin_enqueue_scripts', array($this,'ph_admin_assets'));
                     add_action( 'rest_api_init', array( $this, 'ph_insert_dumpster_post' ));
