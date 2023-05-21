@@ -46,10 +46,23 @@ class InterLink extends Widget_Base {
 			[
 				'label' => esc_html__( 'Post Type', 'page-harvester' ),
 				'type' => \Elementor\Controls_Manager::SELECT,
-				'default' => 'solid',
+				'default' => 'post',
 				'options' => [
 					'post' => esc_html__( 'Dumpster Geo Pages', 'page-harvester' ),
 					'porta_potty_geo_page' => esc_html__( 'Porta Potty Geo Pages', 'page-harvester' ),
+				],
+			]
+		);
+
+        $this->add_control(
+			'link_type',
+			[
+				'label' => esc_html__( 'Link Type', 'page-harvester' ),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'next_link',
+				'options' => [
+					'next_link' => esc_html__( 'Next Link', 'page-harvester' ),
+					'previous_link' => esc_html__( 'Previous Link', 'page-harvester' ),
 				],
 			]
 		);
@@ -139,15 +152,29 @@ class InterLink extends Widget_Base {
         // get the current post id
         $current_post_id = get_the_ID();
 
-        // get the previous post id from the current post id
+        $next_post = get_next_post();
         $prev_post = get_previous_post();
 
-        // echo $previous_post_id post title
-        // get post permalink
-        $permalink = get_permalink($prev_post->ID);
+        if ( $settings['link_type'] == 'next_link' ) {
+            // check if the next post is the current post
+            if ( $next_post->ID == $current_post_id ) {
+                // if so, get the previous post
+                $title = get_the_title($prev_post->ID);
+                $permalink = get_permalink($prev_post->ID);
+            } else {
+                $title = get_the_title($next_post->ID);
+                $permalink = get_permalink($next_post->ID);
+            }
+        } else {
+            $title = get_the_title($prev_post->ID);
+            $permalink = get_permalink($prev_post->ID);
+        }
+
+        // $title = get_the_title($next_post->ID);
+        // $permalink = get_permalink($prev_post->ID);
 
         ?>
-        <p><?php echo $settings['before_text'].' '.get_the_title($prev_post->ID). ', '; ?>
+        <p><?php echo $settings['before_text'].' '.$title. ', '; ?>
         <a href="<?php echo $permalink; ?>">
             <?php echo $settings['cta_text']; ?>
         </a>
