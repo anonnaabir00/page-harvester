@@ -60,7 +60,7 @@ class InterLink extends Widget_Base {
 				'label' => esc_html__( 'Before Text', 'page-harvester' ),
 				'type' => \Elementor\Controls_Manager::TEXTAREA,
 				'rows' => 10,
-				'default' => esc_html__( 'Default description', 'page-harvester' ),
+				'default' => esc_html__( 'If you are looking for ', 'page-harvester' ),
 				'placeholder' => esc_html__( 'Type your description here', 'page-harvester' ),
 			]
 		);
@@ -71,8 +71,18 @@ class InterLink extends Widget_Base {
 				'label' => esc_html__( 'After Text', 'page-harvester' ),
 				'type' => \Elementor\Controls_Manager::TEXTAREA,
 				'rows' => 10,
-				'default' => esc_html__( 'Default description', 'page-harvester' ),
+				'default' => esc_html__( '', 'page-harvester' ),
 				'placeholder' => esc_html__( 'Type your description here', 'page-harvester' ),
+			]
+		);
+
+        $this->add_control(
+			'cta_text',
+			[
+				'label' => esc_html__( 'CTA Text', 'page-harvester' ),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => esc_html__( 'Click Here', 'page-harvester' ),
+				'placeholder' => esc_html__( 'Type your cta here', 'page-harvester' ),
 			]
 		);
 
@@ -137,21 +147,12 @@ class InterLink extends Widget_Base {
         $permalink = get_permalink($prev_post->ID);
 
         ?>
-        <p><?php echo $settings['before_text']; ?>
+        <p><?php echo $settings['before_text'].' '.get_the_title($prev_post->ID). ', '; ?>
         <a href="<?php echo $permalink; ?>">
-            <?php echo get_the_title($prev_post->ID); ?>
+            <?php echo $settings['cta_text']; ?>
         </a>
         <?php echo $settings['after_text']; ?>
         </p>
         <?php
-	}
-
-
-	protected function content_template() {
-		?>
-		<div class="title">
-			{{{ settings.title }}}
-		</div>
-		<?php
 	}
 }
