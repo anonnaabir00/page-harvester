@@ -149,24 +149,41 @@ class CityLinks extends Widget_Base {
 
         $query = new \WP_Query($args);
 
-        // get all post titles and permalinks and echo them
-        if ( $query->have_posts() ) {
-            while ( $query->have_posts() ) {
-                $query->the_post();
+		
+		$previous_location = ''; // variable to store the previous location name
 
-                $title = get_the_title();
-                $permalink = get_permalink();
+		if ( $query->have_posts() ) {
+			while ( $query->have_posts() ) {
+				$query->the_post();
 
-                ?>
-                <div>
-                    <a href="<?php echo $permalink; ?>"><?php echo $title; ?></a>
-            </div>
-                <?php
-                
-            }
-        } else {
-            // no posts found
-        }
+				$title = get_the_title();
+				$permalink = get_permalink();
+				// get post meta
+				$meta = get_post_meta( get_the_ID() );
+				// get location name from post meta
+				$location_name = $meta['location_name'][0];
+				// trim location name from first space and after
+				$location_name = substr($location_name, 0, strpos($location_name, ' '));
+
+				if ( $location_name != $previous_location ) {
+					// display the location name when it changes
+					echo '<h4>' . $location_name . '</h4>';
+					$previous_location = $location_name;
+				}
+
+				?>
+				<div>
+					<a href="<?php echo $permalink; ?>">
+						<?php echo $title; ?>
+						<?php echo $location_name; ?>
+					</a>
+				</div>
+				<?php
+			}
+		} else {
+			// no posts found
+		}
+
 
         wp_reset_postdata();
 	}
