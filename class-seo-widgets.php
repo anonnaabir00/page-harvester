@@ -45,9 +45,11 @@ class Harvester_SEO_Widgets {
 	public function register_widgets( $widgets_manager ) {
 		// Its is now safe to include Widgets files
 		require_once( __DIR__ . '/widgets/interlink.php' );
+		require_once( __DIR__ . '/widgets/city-links.php' );
 
 		// Register Widgets
 		$widgets_manager->register( new Widgets\InterLink() );
+		$widgets_manager->register( new Widgets\CityLinks() );
 	}
 
 	public function widget_category($elements_manager){
