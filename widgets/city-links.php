@@ -27,6 +27,10 @@ class CityLinks extends Widget_Base {
 		return [ 'page_harvester' ];
 	}
 
+	public function get_style_depends() {
+		return ['page_harvester'];
+	}
+
 
 	public function get_script_depends() {
 		return [];
@@ -149,41 +153,48 @@ class CityLinks extends Widget_Base {
 
         $query = new \WP_Query($args);
 
-		
-		$previous_location = ''; // variable to store the previous location name
+		$location_posts = array(); // array to store posts for each location
 
 		if ( $query->have_posts() ) {
 			while ( $query->have_posts() ) {
 				$query->the_post();
-
+		
 				$title = get_the_title();
 				$permalink = get_permalink();
 				// get post meta
 				$meta = get_post_meta( get_the_ID() );
 				// get location name from post meta
-				$location_name = $meta['location_name'][0];
-				// trim location name from first space and after
-				$location_name = substr($location_name, 0, strpos($location_name, ' '));
-
-				if ( $location_name != $previous_location ) {
-					// display the location name when it changes
-					echo '<h4>' . $location_name . '</h4>';
-					$previous_location = $location_name;
-				}
-
-				?>
-				<div>
-					<a href="<?php echo $permalink; ?>">
-						<?php echo $title; ?>
-						<?php echo $location_name; ?>
-					</a>
-				</div>
-				<?php
+				$location_name = $meta['state'][0];
+		
+				// add the post to the array for the location
+				$location_posts[ $location_name ][] = array(
+					'title' => $title,
+					'permalink' => $permalink
+				);
 			}
+			?>
+			<div class="grid grid-cols-3 gap-6">
+			<?php
+		
+			// display the state names and associated posts
+			foreach ( $location_posts as $location_name => $posts ) {
+				echo '<h4 class="text-lg">' . $location_name . '</h4>';
+				foreach ( $posts as $post ) {
+					?>
+					<div>
+						<a href="<?php echo $post['permalink']; ?>">
+							<?php echo $post['title']; ?>
+						</a>
+					</div>
+					<?php
+				}
+			}
+			?>
+			</div>
+			<?php
 		} else {
 			// no posts found
 		}
-
 
         wp_reset_postdata();
 	}

@@ -13,8 +13,9 @@ class Harvester_SEO_Widgets {
 		return self::$_instance;
 	}
 
-	public function widget_scripts() {
-		wp_register_script( 'elementor-hello-world', plugins_url( '/assets/js/hello-world.js', __FILE__ ), [ 'jquery' ], false, true );
+	public function page_harvester_styles() {
+		wp_register_style( 'page_harvester', plugins_url( 'assets/app.css', __FILE__ ) );
+		wp_enqueue_style( 'page_harvester' );
 	}
 
 
@@ -65,16 +66,15 @@ class Harvester_SEO_Widgets {
 
 	public function __construct() {
 		// Register widget scripts
-		// add_action( 'elementor/frontend/after_register_scripts', [ $this, 'widget_scripts' ] );
+		add_action( 'elementor/frontend/before_enqueue_styles', [ $this, 'page_harvester_styles' ]);
+		add_action( 'elementor/preview/enqueue_styles', [ $this, 'page_harvester_styles' ]);
+		add_action( 'wp_enqueue_scripts', [ $this, 'page_harvester_styles' ]);
 
 		// Register widgets
 		add_action( 'elementor/widgets/register', [ $this, 'register_widgets' ] );
 
 		// Create Widget Category
 		add_action( 'elementor/elements/categories_registered', [ $this, 'widget_category' ] );
-
-		// Register editor scripts
-		// add_action( 'elementor/editor/after_enqueue_scripts', [ $this, 'editor_scripts' ] );
 	}
 }
 
