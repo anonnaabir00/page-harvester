@@ -4,7 +4,7 @@
  * Plugin Name:       Page Harvester
  * Plugin URI:        https://codember.com
  * Description:       Fully functional Page Harvester plugin for WordPress. This plugin allows you to create pages automatically based on search query.
- * Version:           5.5
+ * Version:           6.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Asaduzzaman Abir
@@ -211,12 +211,14 @@
 
                 // Update ACF meta field
                 $location = 'location_name';
+                $state = 'state';
                 $phone = 'phone_number';
                 $phone_placeholder = 'phone_number_placeholder';
                 $city_information = 'city_information';
                 $schema_code = 'schema_code';
 
                 update_field($location, $value->location, $post_id);
+                update_field($state, $value->state, $post_id);
                 update_field($phone, 'tel:'.$value->phone, $post_id);
                 update_field($phone_placeholder, $value->placeholder, $post_id);
                 update_field($city_information, $value->information, $post_id);
@@ -291,12 +293,14 @@
 
                 // Update ACF meta field
                 $location = 'location_name';
+                $state = 'state';
                 $phone = 'phone_number';
                 $phone_placeholder = 'phone_number_placeholder';
                 $city_information = 'city_information';
                 $schema_code = 'schema_code';
 
                 update_field($location, $value->location, $post_id);
+                update_field($state, $value->state, $post_id);
                 update_field($phone, 'tel:'.$value->phone, $post_id);
                 update_field($phone_placeholder, $value->placeholder, $post_id);
                 update_field($city_information, $value->information, $post_id);

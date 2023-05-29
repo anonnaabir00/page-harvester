@@ -142,7 +142,7 @@ class CityLinks extends Widget_Base {
         $args = array(
             'post_type' => $settings['post_type'],
             'posts_per_page' => -1,
-            'orderby' => 'rand',
+            'orderby' => 'date',
             'post_status' => 'publish',
             'ignore_sticky_posts' => true,
             'no_found_rows' => true,
@@ -165,6 +165,12 @@ class CityLinks extends Widget_Base {
 				$meta = get_post_meta( get_the_ID() );
 				// get location name from post meta
 				$location_name = $meta['state'][0];
+
+				// check if the post has the "Elementor Full Width" page template
+				$page_template = get_page_template_slug( get_the_ID() );
+				if ( $page_template !== 'elementor_header_footer' ) {
+					continue; // Skip the post
+				}
 		
 				// add the post to the array for the location
 				$location_posts[ $location_name ][] = array(
@@ -173,12 +179,13 @@ class CityLinks extends Widget_Base {
 				);
 			}
 			?>
-			<div class="grid grid-cols-3 gap-6">
+			<div class="grid sm:grid-cols-1 md:grid-cols-2 md:gap-6 sm:gap-3">
 			<?php
 		
 			// display the state names and associated posts
 			foreach ( $location_posts as $location_name => $posts ) {
-				echo '<h4 class="text-lg">' . $location_name . '</h4>';
+				echo '<div>';
+				echo '<h4 class="text-lg mt-4">' . $location_name . '</h4>';
 				foreach ( $posts as $post ) {
 					?>
 					<div>
@@ -188,6 +195,7 @@ class CityLinks extends Widget_Base {
 					</div>
 					<?php
 				}
+				echo '</div>';
 			}
 			?>
 			</div>

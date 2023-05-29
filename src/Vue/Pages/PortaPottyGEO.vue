@@ -10,6 +10,15 @@
                 <label for="zip">ZIP Code</label>
                 <input v-model="zip" name="zip" placeholder="60001" type="text">
 
+                <div class="w-full">
+                <label for="state">State</label>
+                <vs-select filter placeholder="Select" v-model="value" class="mt-2 mb-2">
+                <vs-option v-for="(option, index) in options" :key="index" :label="option.label" :value="option.value">
+                {{ option.text }}
+                </vs-option>
+                </vs-select>
+                </div>
+
                 <label for="placeholder">Phone Number Placeholder</label>
                 <input v-model="placeholder" name="placeholder" placeholder="(469) 281-6668" type="text">
 
@@ -37,6 +46,8 @@ import Vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css';
 import Swal from 'sweetalert2';
 
+import optionsData from './states.json';
+
 Vue.use(Vuesax, {
 // options here
 })
@@ -51,11 +62,13 @@ data() {
         phone: null,
         information: null,
         schema: null,
+        value: '',
+        options: optionsData,
     }
 },
 methods: {
     addPortaPottyGeo(){
-        if (this.city && this.zip && this.information != null) {
+        if (this.city && this.zip && this.information && this.value != null) {
             const loading = this.$vs.loading({
             text: 'Creating Porta Potty GEO Page...'
             });
@@ -70,6 +83,7 @@ methods: {
                 post_title: 'Porta Potty Rental ' +  this.city + ' ' + this.zip,
                 post_content: content,
                 location: this.city + ' ' + this.zip,
+                state: this.value,
                 information: this.information,
                 schema: this.schema,
             }
