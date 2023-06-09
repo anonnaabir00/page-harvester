@@ -35,9 +35,9 @@
 
         public function custom_header_shortcode($atts){
             // check if specific page is about
-            if ( !is_page( 'testimonials' ) ) {
+            // if ( !is_page( 'testimonials' ) ) {
                 return '<div id="ph-custom-header"></div>';
-            }
+            // }
         }
 
     }
