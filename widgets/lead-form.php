@@ -35,97 +35,62 @@ class LeadForm extends Widget_Base {
 
 	protected function register_controls() {
 		$this->start_controls_section(
-			'section_content',
+			'leadform_styles',
 			[
-				'label' => __( 'Content', 'elementor-hello-world' ),
+				'label' => __( 'Styles', 'page-harvester' ),
+				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
 
 		$this->add_control(
-			'post_type',
+			'fields_padding',
 			[
-				'label' => esc_html__( 'Post Type', 'page-harvester' ),
-				'type' => \Elementor\Controls_Manager::SELECT,
-				'default' => 'post',
-				'options' => [
-					'post' => esc_html__( 'Dumpster Geo Pages', 'page-harvester' ),
-					'porta_potty_geo_page' => esc_html__( 'Porta Potty Geo Pages', 'page-harvester' ),
+				'label' => esc_html__( 'Fields Padding', 'page-harvester' ),
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
+				'selectors' => [
+					'{{WRAPPER}} .phlf-field' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
 
-        $this->add_control(
-			'link_type',
+		$this->add_control(
+			'button_padding',
 			[
-				'label' => esc_html__( 'Link Type', 'page-harvester' ),
-				'type' => \Elementor\Controls_Manager::SELECT,
-				'default' => 'next_link',
-				'options' => [
-					'next_link' => esc_html__( 'Next Link', 'page-harvester' ),
-					'previous_link' => esc_html__( 'Previous Link', 'page-harvester' ),
+				'label' => esc_html__( 'Button Padding', 'page-harvester' ),
+				'type' => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
+				'selectors' => [
+					'{{WRAPPER}} .phlf-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
 
-        $this->add_control(
-			'before_text',
+		$this->add_control(
+			'button_bg_color',
 			[
-				'label' => esc_html__( 'Before Text', 'page-harvester' ),
-				'type' => \Elementor\Controls_Manager::TEXTAREA,
-				'rows' => 10,
-				'default' => esc_html__( 'If you are looking for ', 'page-harvester' ),
-				'placeholder' => esc_html__( 'Type your description here', 'page-harvester' ),
+				'label' => esc_html__( 'Button Background Color', 'page-harvester' ),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .phlf-button' => 'background-color: {{VALUE}}',
+				],
 			]
 		);
 
-        $this->add_control(
-			'after_text',
+		$this->add_control(
+			'button_text_color',
 			[
-				'label' => esc_html__( 'After Text', 'page-harvester' ),
-				'type' => \Elementor\Controls_Manager::TEXTAREA,
-				'rows' => 10,
-				'default' => esc_html__( '', 'page-harvester' ),
-				'placeholder' => esc_html__( 'Type your description here', 'page-harvester' ),
+				'label' => esc_html__( 'Button Text Color', 'page-harvester' ),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .phlf-button' => 'color: {{VALUE}}',
+				],
 			]
 		);
 
-        $this->add_control(
-			'cta_text',
-			[
-				'label' => esc_html__( 'CTA Text', 'page-harvester' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => esc_html__( 'Click Here', 'page-harvester' ),
-				'placeholder' => esc_html__( 'Type your cta here', 'page-harvester' ),
-			]
-		);
+		
 
-		$this->end_controls_section();
-
-		// $this->start_controls_section(
-		// 	'section_style',
-		// 	[
-		// 		'label' => __( 'Style', 'elementor-hello-world' ),
-		// 		'tab' => Controls_Manager::TAB_STYLE,
-		// 	]
-		// );
-
-		// $this->add_control(
-		// 	'text_transform',
-		// 	[
-		// 		'label' => __( 'Text Transform', 'elementor-hello-world' ),
-		// 		'type' => Controls_Manager::SELECT,
-		// 		'default' => '',
-		// 		'options' => [
-		// 			'' => __( 'None', 'elementor-hello-world' ),
-		// 			'uppercase' => __( 'UPPERCASE', 'elementor-hello-world' ),
-		// 			'lowercase' => __( 'lowercase', 'elementor-hello-world' ),
-		// 			'capitalize' => __( 'Capitalize', 'elementor-hello-world' ),
-		// 		],
-		// 		'selectors' => [
-		// 			'{{WRAPPER}} .title' => 'text-transform: {{VALUE}};',
-		// 		],
-		// 	]
-		// );
+		
 
 		$this->end_controls_section();
 	}

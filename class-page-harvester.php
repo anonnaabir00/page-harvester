@@ -2,9 +2,9 @@
 
 /**
  * Plugin Name:       Page Harvester
- * Plugin URI:        https://codember.com
+ * Plugin URI:        https://primedumpster.com
  * Description:       Fully functional Page Harvester plugin for WordPress. This plugin allows you to create pages automatically based on search query.
- * Version:           6.3
+ * Version:           6.4
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Asaduzzaman Abir
@@ -23,12 +23,11 @@
                 public function __construct(){
                     require_once( plugin_dir_path( __FILE__ ) . 'geo-page.php' );
                     require_once( plugin_dir_path( __FILE__ ) . 'class-seo-widgets.php' );
-                    // require_once( plugin_dir_path( __FILE__ ) . 'class-shortcode.php' );
-
 
                     add_action('admin_menu', array( $this,'ph_admin_menu'));
                     add_action( 'admin_enqueue_scripts', array($this,'ph_admin_assets'));
                     add_action( 'rest_api_init', array( $this, 'ph_insert_dumpster_post' ));
+                    add_action( 'rest_api_init', array( $this, 'ph_send_email' ));
                     add_filter( 'script_loader_tag', array( $this,'add_module_attribute'), 10,3 );
                 }
 
@@ -354,6 +353,25 @@
 
                 
                 return $data;
+            }
+
+            public function ph_send_email() {
+                register_rest_route( 'ph/v1', '/email', array(
+                    'methods' => 'POST',
+                    'callback' => array( $this, 'ph_send_email_callback' ),
+                ));
+            }
+        
+            public function ph_send_email_callback(WP_REST_Request $request){
+                $value = json_decode($request->get_body());
+                // wordpress mail function
+                $to = get_option( 'admin_email' );
+                $subject = 'New Request from ' . $value->name . ' via Page Harvester';
+                $message = '  Name: ' . $value->name . '  Email: ' . $value->email . '  Phone: ' . $value->phone . '  ZIP: ' . $value->zip . '  Project Type: ' . $value->projecttype;
+                $headers = array('Content-Type: text/html; charset=UTF-8');
+                wp_mail( $to, $subject, $message, $headers );
+        
+                return $value;
             }
 
             }

@@ -100,6 +100,7 @@ class Harvester_SEO_Widgets {
 
 		// Create Widget Category
 		add_action( 'elementor/elements/categories_registered', [ $this, 'widget_category' ] );
+		
 	}
 }
 
