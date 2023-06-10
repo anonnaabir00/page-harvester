@@ -6,10 +6,11 @@
                 <input v-model="phone" type="text" name="phone" id="phone" placeholder="Phone" class="phlf-field m-2 p-1 px-5 py-2 text-sm placeholder:text-black placeholder:uppercase">
                 <input v-model="zip" type="text" name="zip" id="zip" placeholder="ZIP" class="phlf-field w-24 m-2 p-1 px-5 py-2 text-sm placeholder:text-black placeholder:uppercase">
                 <select v-model="projecttype" name="project-type" id="project-type" placeholder="PROJECT TYPE" class="phlf-field w-48 m-2 p-1 px-5 py-2 text-sm placeholder:text-black placeholder:uppercase">
-                    <option value="">Dumpster</option>
-                    <option value="">Porta Potty</option>
-                    <option value="">Fencing</option>
-                    <option value="">Multiple</option>
+                    <option disabled selected>Project Type</option>
+                    <option value="Dumpster">Dumpster</option>
+                    <option value="Porta Potty">Porta Potty</option>
+                    <option value="Fencing">Fencing</option>
+                    <option value="Multiple">Multiple</option>
                 </select>
 
                 <button @click="sendEmail()" class="phlf-button m-2 pt-3 pb-3 pl-6 pr-6 bg-green-500 text-white text-sm" type="submit">Get Estimate</button>
@@ -32,7 +33,7 @@ export default({
             email: null,
             phone: null,
             zip: null,
-            projecttype: null
+            projecttype: 'Project Type'
         }
     },
     mounted() {        

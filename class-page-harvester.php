@@ -4,7 +4,7 @@
  * Plugin Name:       Page Harvester
  * Plugin URI:        https://primedumpster.com
  * Description:       Fully functional Page Harvester plugin for WordPress. This plugin allows you to create pages automatically based on search query.
- * Version:           6.4
+ * Version:           6.5
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Asaduzzaman Abir

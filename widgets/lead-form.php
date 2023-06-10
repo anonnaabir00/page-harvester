@@ -54,6 +54,26 @@ class LeadForm extends Widget_Base {
 			]
 		);
 
+		$this->add_group_control(
+			\Elementor\Group_Control_Border::get_type(),
+			[
+				'name' => 'field_border',
+				'selector' => '{{WRAPPER}} .phlf-field',
+			]
+		);
+
+		$this->add_control(
+			'field_text_color',
+			[
+				'label' => esc_html__( 'Field Text Color', 'page-harvester' ),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .phlf-field' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .phlf-field::placeholder' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
 		$this->add_control(
 			'button_padding',
 			[
@@ -98,45 +118,6 @@ class LeadForm extends Widget_Base {
 
 	protected function render() {
 		$settings = $this->get_settings_for_display();
-
-        // wordpress get post
-        $args = array(
-            'post_type' => $settings['post_type'],
-            'posts_per_page' => 1,
-            'orderby' => 'rand',
-            'post_status' => 'publish',
-            'ignore_sticky_posts' => true,
-            'no_found_rows' => true,
-            'update_post_meta_cache' => false,
-            'update_post_term_cache' => false,
-            'cache_results' => false,
-        );
-
-        $query = new \WP_Query($args);
-
-        // get the current post id
-        $current_post_id = get_the_ID();
-
-        $next_post = get_next_post();
-        $prev_post = get_previous_post();
-
-        if ( $settings['link_type'] == 'next_link' ) {
-            // check if the next post is the current post
-            if ( $next_post->ID == $current_post_id ) {
-                // if so, get the previous post
-                $title = get_the_title($prev_post->ID);
-                $permalink = get_permalink($prev_post->ID);
-            } else {
-                $title = get_the_title($next_post->ID);
-                $permalink = get_permalink($next_post->ID);
-            }
-        } else {
-            $title = get_the_title($prev_post->ID);
-            $permalink = get_permalink($prev_post->ID);
-        }
-
-        // $title = get_the_title($next_post->ID);
-        // $permalink = get_permalink($prev_post->ID);
         ?>
             <div id="ph-leadform"></div>
         <?php
