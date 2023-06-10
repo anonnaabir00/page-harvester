@@ -1,11 +1,11 @@
 <template>
     <div>
             <div class="w-full sm:hidden md:flex justify-center">
-                <input v-model="name" type="text" name="name" id="name" placeholder="Name" class="phlf-field m-2 p-1 px-5 py-2 text-sm placeholder:text-black placeholder:uppercase">
-                <input v-model="email" type="email" name="email" id="email" placeholder="Email" class="phlf-field m-2 p-1 px-5 py-2 text-sm placeholder:text-black placeholder:uppercase">
-                <input v-model="phone" type="text" name="phone" id="phone" placeholder="Phone" class="phlf-field m-2 p-1 px-5 py-2 text-sm placeholder:text-black placeholder:uppercase">
-                <input v-model="zip" type="text" name="zip" id="zip" placeholder="ZIP" class="phlf-field w-24 m-2 p-1 px-5 py-2 text-sm placeholder:text-black placeholder:uppercase">
-                <select v-model="projecttype" name="project-type" id="project-type" placeholder="PROJECT TYPE" class="phlf-field w-48 m-2 p-1 px-5 py-2 text-sm placeholder:text-black placeholder:uppercase">
+                <input v-model="name" type="text" name="name" id="name" placeholder="Name" class="phlf-field m-2 p-1 px-2 py-2 text-sm placeholder:text-black placeholder:uppercase">
+                <input v-model="email" type="email" name="email" id="email" placeholder="Email" class="phlf-field m-2 p-1 px-2 py-2 text-sm placeholder:text-black placeholder:uppercase">
+                <input v-model="phone" type="text" name="phone" id="phone" placeholder="Phone" class="phlf-field m-2 p-1 px-2 py-2 text-sm placeholder:text-black placeholder:uppercase">
+                <input v-model="zip" type="text" name="zip" id="zip" placeholder="ZIP" class="phlf-field w-30 m-2 p-1 px-2 py-2 text-sm placeholder:text-black placeholder:uppercase">
+                <select v-model="projecttype" name="project-type" id="project-type" placeholder="PROJECT TYPE" class="phlf-field w-48 m-2 p-1 px-2 py-2 text-sm placeholder:text-black placeholder:uppercase">
                     <option disabled selected>Project Type</option>
                     <option value="Dumpster">Dumpster</option>
                     <option value="Porta Potty">Porta Potty</option>
@@ -40,15 +40,15 @@ export default({
     },
     methods: {
         sendEmail() {
-            if (this.name === null || this.email === null || this.phone === null, this.zip === null, this.projecttype === null) {
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Please fill out all fields',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                })
-                return;
-                }
+            if (this.name === null || this.email === null || this.phone === null || this.zip === null || this.projecttype === null) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Please fill out all fields',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return;
+            }
             axios({
               method: 'post',
               url: '/wp-json/ph/v1/email',
