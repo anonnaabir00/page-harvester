@@ -2,7 +2,7 @@
     <div class="bg-white p-16 m-16">
         <div class="brand-color p-8">
             <h1 class="text-2xl text-white">Prime Dumpster</h1>
-            <p class="text-base text-white mt-4">Geo Page Harvester 3.0</p>
+            <p class="text-base text-white mt-4">Geo Page Harvester 7.0</p>
 
             <router-view></router-view>
         </div>

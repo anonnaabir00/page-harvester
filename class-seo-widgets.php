@@ -61,12 +61,14 @@ class Harvester_SEO_Widgets {
 		// Its is now safe to include Widgets files
 		require_once( __DIR__ . '/widgets/interlink.php' );
 		require_once( __DIR__ . '/widgets/city-links.php' );
+		require_once( __DIR__ . '/widgets/blog-directory.php' );
 		require_once( __DIR__ . '/widgets/lead-form.php' );
 
 
 		// Register Widgets
 		$widgets_manager->register( new Widgets\InterLink() );
 		$widgets_manager->register( new Widgets\CityLinks() );
+		$widgets_manager->register( new Widgets\BlogDirectory() );
 		$widgets_manager->register( new Widgets\LeadForm() );
 	}
 
