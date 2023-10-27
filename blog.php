@@ -17,6 +17,10 @@
                 add_action( 'init', array( $this, 'ph_news' ) );
                 add_action( 'init', array( $this, 'ph_dumpster_blog' ) );
                 add_action( 'init', array( $this, 'ph_porta_potty_blog' ) );
+
+                add_action( 'template_include', array( $this, 'news_page_template' ) );
+                add_action( 'template_include', array( $this, 'dumpster_blog_page_template' ) );
+                add_action( 'template_include', array( $this, 'porta_potty_blog_page_template' ) );
             }
 
             public function ph_news() {
@@ -59,6 +63,16 @@
                 );
             }
 
+            public function news_page_template($template) {
+                if (is_singular('news')) {
+                    $template_path = plugin_dir_path(__FILE__) . 'templates/news.php';
+                    if (file_exists($template_path)) {
+                        return $template_path;
+                    }
+                }
+                return $template;
+            }
+
             public function ph_dumpster_blog() {
                 // create Dumpster custom post type
                 register_post_type( 'dumpster_blog',
@@ -99,6 +113,17 @@
                 );
             }
 
+            public function dumpster_blog_page_template($template) {
+                if (is_singular('dumpster_blog')) {
+                    $template_path = plugin_dir_path(__FILE__) . 'templates/dumpster-blog.php';
+                    if (file_exists($template_path)) {
+                        return $template_path;
+                    }
+                }
+                return $template;
+            }
+            
+
             public function ph_porta_potty_blog() {
                 // create Porta Potty custom post type
                 register_post_type( 'porta_potty_blog',
@@ -133,10 +158,20 @@
                         'show_in_menu' => true,
                         'show_in_nav_menus' => true,
                         'show_in_admin_bar' => true,
-                        'rest_base' => 'Porta Potty-blog',
+                        'rest_base' => 'Porta-Potty-blog',
                         'rest_controller_class' => 'WP_REST_Posts_Controller',
                     )
                 );
+            }
+
+            public function porta_potty_blog_page_template($template) {
+                if (is_singular('porta_potty_blog')) {
+                    $template_path = plugin_dir_path(__FILE__) . 'templates/porta-potty-blog.php';
+                    if (file_exists($template_path)) {
+                        return $template_path;
+                    }
+                }
+                return $template;
             }
 
 
