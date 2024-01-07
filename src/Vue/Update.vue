@@ -1,0 +1,57 @@
+<template>
+    <div class="mb-4">
+            <div class="flex justify-start w-full">
+                <button @click.prevent="updatePost" class="bg-green-700 text-white mb-4 pl-6 pr-6 p-3 w-full">Update Post</button>
+            </div>
+    </div>
+</template>
+
+<script>
+import Swal from 'sweetalert2';
+import axios from 'axios';
+
+export default({
+    name: 'UpdatePanel',
+    data() {
+        return {
+            
+        }
+    },
+    mounted() {        
+    },
+    methods: {
+        updatePost(){
+            const location_data = document.getElementById('ph_location_data').value;
+            console.log(location_data);
+            const postID = document.getElementById('post_ID').value;
+
+            const locationValue = document.getElementById('ph_location').value;
+            const stateValue = document.getElementById('ph_state').value;
+            const cityinfoValue = document.getElementById('ph_cityinfo').value;
+
+            var url = `/wp-json/ph/v1/porta-potty/geo/update-meta/${postID}`;
+
+            axios({
+                method: 'post',
+                url: url,
+                data: {
+                    location: locationValue,
+                    state: stateValue,
+                    cityinfo: cityinfoValue,
+                    // phonegroup: location_data.phone,
+                }
+            }).then (response => {
+                console.log(response.data);
+                Swal.fire({
+                title: "Good job!",
+                text: `Post Updated Sucessfully`,
+                icon: "success"
+                });
+            }).catch (error => {
+                console.log(error);
+            });
+        }
+    }
+})
+
+</script>
