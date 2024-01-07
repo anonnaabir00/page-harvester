@@ -21,10 +21,11 @@
             Class Page_Harvester {
 
                 public function __construct(){
+                    require_once( plugin_dir_path( __FILE__ ) . 'db.php' );
                     require_once( plugin_dir_path( __FILE__ ) . 'geo-page.php' );
                     require_once( plugin_dir_path( __FILE__ ) . 'blog.php' );
                     require_once( plugin_dir_path( __FILE__ ) . 'class-seo-widgets.php' );
-
+                    
                     add_action('admin_menu', array( $this,'ph_admin_menu'));
                     add_action( 'admin_enqueue_scripts', array($this,'ph_admin_assets'));
                     add_action( 'rest_api_init', array( $this, 'ph_insert_dumpster_post' ));
@@ -33,13 +34,39 @@
                 }
 
                 public function ph_admin_assets(){
+                    global $post;
+                    global $wpdb;
+
                     $current_screen = get_current_screen();
                     $admin_screen = 'toplevel_page_page_harvester';
 
-                    if ($admin_screen == $current_screen->base) {
+                    $post_id = get_the_ID(  );
+                    $post = get_post($post_id);
+                    $table_name = $wpdb->prefix . 'page_harvester';
+
+                    $output = [
+                        'id' => $post_id,
+                        'title' => $post->post_title,
+                        'content' => $post->post_content,
+                        'location' => get_field('ph_location', $post_id),
+                        'state' => get_field('ph_state', $post_id),
+                        'city_information' => get_field('ph_cityinfo', $post_id),
+                    ];
+
+                    $location_data = $wpdb->get_results("SELECT * FROM $table_name", ARRAY_A);
+
+
+                    if ($admin_screen == $current_screen->base OR $post->post_type == 'post' OR $post->post_type == 'porta_potty_geo_page') {
                         wp_enqueue_style( 'app', plugins_url( 'assets/app.css', __FILE__ ) );
                         wp_enqueue_style( 'main', plugins_url( 'assets/admin.css', __FILE__ ) );
                         wp_enqueue_script( 'admin', plugins_url( 'assets/admin.js', __FILE__ ), [], '8.0', true );
+                        wp_localize_script( 'admin', 'ph_postmeta',
+                            array( 
+                                'ajaxurl' => admin_url( 'admin-ajax.php' ),
+                                'data' => $output,
+                                'location_data' => $location_data
+                            )
+                        );
                     }
                 }
 
@@ -110,6 +137,14 @@
                     );
 
                     add_submenu_page( 
+                        $slug, __( 'Location Data', 'page-harvester' ), 
+                        __( 'Location Data', 'page-harvester' ),
+                        $capability,
+                        'page_harvester#/location-data',
+                        array( $this,'ph_settings_content' ) 
+                    );
+
+                    add_submenu_page( 
                         $slug, __( 'GEO Pages Export', 'page-harvester' ), 
                         __( 'GEO Pages Export', 'page-harvester' ),
                         $capability,
@@ -141,10 +176,16 @@
                     'callback' => array( $this, 'ph_insert_portapotty_ads_rest_callback' ),
                 ));
 
+                // Porta Potty Rest API
 
                 register_rest_route( 'ph/v1', '/porta-potty/geo', array(
                     'methods' => 'POST',
                     'callback' => array( $this, 'ph_insert_portapotty_rest_callback' ),
+                ));
+
+                register_rest_route( 'ph/v1', '/porta-potty/geo/update-meta/(?P<post_id>\d+)', array(
+                    'methods' => 'POST',
+                    'callback' => array( $this, 'ph_portapotty_update_meta' ),
                 ));
 
 
@@ -283,7 +324,6 @@
                 return $post_url;
             }
 
-
             public function ph_insert_portapotty_rest_callback(WP_REST_Request $request){
                 $value = json_decode($request->get_body());
                 
@@ -318,6 +358,38 @@
                 // Get Post Permalink
                 $post_url = get_permalink($post_id);
 
+                return $post_url;
+            }
+
+            public function ph_portapotty_update_meta(WP_REST_Request $request){
+                $value = json_decode($request->get_body());
+
+                $post_id = $request->get_param('post_id');
+
+                // Get ACF Meta
+                $acf_location = get_field('location_name', $post_id);
+                $acf_state = get_field('state', $post_id);
+                $acf_cityinfo = get_field('city_information', $post_id);
+
+                // Custom Post Meta Values
+                // $location = $value->location ? $acf_location : '';
+                // $state = $value->state ? $acf_state : '';
+                // $cityinfo = $value->cityinfo ? $acf_cityinfo : '';
+
+                $location = sanitize_text_field($value->location);
+                $state = sanitize_text_field($value->state);
+                $cityinfo = sanitize_text_field($value->cityinfo);
+                // $phonegroup = sanitize_text_field($value->phonegroup);
+                
+                // Update Post Meta
+                update_post_meta($post_id, 'ph_location',$location);
+                update_post_meta($post_id, 'ph_state',$state);
+                update_post_meta($post_id, 'ph_cityinfo',$cityinfo);
+                // update_post_meta($post_id, 'ph_phonegroup',$phonegroup);
+            
+                // Get Post Permalink
+                $post_url = get_permalink($post_id);
+            
                 return $post_url;
             }
 
