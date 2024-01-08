@@ -50,7 +50,9 @@
                         'content' => $post->post_content,
                         'location' => get_field('ph_location', $post_id),
                         'state' => get_field('ph_state', $post_id),
+                        'phone' => get_field('ph_phone', $post_id),
                         'city_information' => get_field('ph_cityinfo', $post_id),
+                        'location_data' => get_field('ph_location_data', $post_id),
                     ];
 
                     $location_data = $wpdb->get_results("SELECT * FROM $table_name", ARRAY_A);
@@ -378,14 +380,16 @@
 
                 $location = sanitize_text_field($value->location);
                 $state = sanitize_text_field($value->state);
+                $phone = sanitize_text_field($value->phone);
                 $cityinfo = sanitize_text_field($value->cityinfo);
-                // $phonegroup = sanitize_text_field($value->phonegroup);
+                $location_data = sanitize_text_field($value->locationdata);
                 
                 // Update Post Meta
                 update_post_meta($post_id, 'ph_location',$location);
                 update_post_meta($post_id, 'ph_state',$state);
+                update_post_meta($post_id, 'ph_phone',$phone);
                 update_post_meta($post_id, 'ph_cityinfo',$cityinfo);
-                // update_post_meta($post_id, 'ph_phonegroup',$phonegroup);
+                update_post_meta($post_id, 'ph_location_data',$location_data);
             
                 // Get Post Permalink
                 $post_url = get_permalink($post_id);

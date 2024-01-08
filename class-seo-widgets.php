@@ -64,6 +64,9 @@ class Harvester_SEO_Widgets {
 		require_once( __DIR__ . '/widgets/blog-directory.php' );
 		require_once( __DIR__ . '/widgets/lead-form.php' );
 		require_once( __DIR__ . '/widgets/concrete-weight-calculator.php' );
+		require_once( __DIR__ . '/widgets/location.php' );
+		require_once( __DIR__ . '/widgets/state.php' );
+		require_once( __DIR__ . '/widgets/phone-number.php' );
 
 
 		// Register Widgets
@@ -72,6 +75,9 @@ class Harvester_SEO_Widgets {
 		$widgets_manager->register( new Widgets\BlogDirectory() );
 		$widgets_manager->register( new Widgets\LeadForm() );
 		$widgets_manager->register( new Widgets\ConcreteWeightCalculator() );
+		$widgets_manager->register( new Widgets\Location() );
+		$widgets_manager->register( new Widgets\State() );
+		$widgets_manager->register( new Widgets\PhoneNumber() );
 	}
 
 	public function widget_category($elements_manager){
