@@ -21,13 +21,14 @@ export default({
     },
     methods: {
         updatePost(){
-            const location_data = document.getElementById('ph_location_data').value;
-            console.log(location_data);
             const postID = document.getElementById('post_ID').value;
 
             const locationValue = document.getElementById('ph_location').value;
             const stateValue = document.getElementById('ph_state').value;
+            const phoneValue = document.getElementById('ph_phone').value;
             const cityinfoValue = document.getElementById('ph_cityinfo').value;
+
+            const locationData = document.getElementById('ph_location_data').value;
 
             var url = `/wp-json/ph/v1/porta-potty/geo/update-meta/${postID}`;
 
@@ -38,7 +39,8 @@ export default({
                     location: locationValue,
                     state: stateValue,
                     cityinfo: cityinfoValue,
-                    // phonegroup: location_data.phone,
+                    phone: phoneValue,
+                    // locationdata: locationData,
                 }
             }).then (response => {
                 console.log(response.data);
