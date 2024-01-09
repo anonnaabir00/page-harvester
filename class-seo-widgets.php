@@ -63,6 +63,7 @@ class Harvester_SEO_Widgets {
 		require_once( __DIR__ . '/widgets/city-links.php' );
 		require_once( __DIR__ . '/widgets/blog-directory.php' );
 		require_once( __DIR__ . '/widgets/lead-form.php' );
+		require_once( __DIR__ . '/widgets/click-to-call.php' );
 		require_once( __DIR__ . '/widgets/concrete-weight-calculator.php' );
 
 
@@ -71,6 +72,7 @@ class Harvester_SEO_Widgets {
 		$widgets_manager->register( new Widgets\CityLinks() );
 		$widgets_manager->register( new Widgets\BlogDirectory() );
 		$widgets_manager->register( new Widgets\LeadForm() );
+		$widgets_manager->register( new Widgets\ClickToCall() );
 		$widgets_manager->register( new Widgets\ConcreteWeightCalculator() );
 	}
 
