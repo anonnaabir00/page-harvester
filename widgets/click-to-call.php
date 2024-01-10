@@ -50,6 +50,41 @@ class ClickToCall extends Widget_Base {
 			]
 		);
 
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name' => 'button_typography',
+				'selector' => '{{WRAPPER}} .ph-callbutton',
+			]
+		);
+
+		$this->add_control(
+			'button_text_align',
+			[
+				'label' => esc_html__( 'Text Align', 'page-harvester' ),
+				'type' => \Elementor\Controls_Manager::CHOOSE,
+				'options' => [
+					'left' => [
+						'title' => esc_html__( 'Left', 'page-harvester' ),
+						'icon' => 'eicon-text-align-left',
+					],
+					'center' => [
+						'title' => esc_html__( 'Center', 'page-harvester' ),
+						'icon' => 'eicon-text-align-center',
+					],
+					'right' => [
+						'title' => esc_html__( 'Right', 'page-harvester' ),
+						'icon' => 'eicon-text-align-right',
+					],
+				],
+				'default' => 'center',
+				'toggle' => true,
+				'selectors' => [
+					'{{WRAPPER}} .ph-callbutton' => 'text-align: {{VALUE}};',
+				],
+			]
+		);
+
 		$this->add_control(
 			'button_padding',
 			[
@@ -85,9 +120,6 @@ class ClickToCall extends Widget_Base {
 				],
 			]
 		);
-
-		
-
 		
 
 		$this->end_controls_section();
@@ -96,9 +128,16 @@ class ClickToCall extends Widget_Base {
 
 	protected function render() {
 		$settings = $this->get_settings_for_display();
+		$phone_number = get_field( "phone_number" );
+		$phone_number_placeholder = get_field( "phone" );
         ?>
         <div class="ph-callbutton bg-red-600 w-full">
-            <a href="tel:1234" class="text-white text-center">Click To Call</a>
+            <a href="tel:<?php echo $phone_number;?>" class="text-white text-center">
+			<div class="grid grid-cols-1">
+				<div>Click To Call</div>
+				<div><?php echo $phone_number_placeholder; ?></div>
+			</div>
+		</a>
         </div>
 
         <?php
