@@ -29,7 +29,8 @@
                 $sql = "CREATE TABLE $table_name (
                     id mediumint(9) NOT NULL AUTO_INCREMENT,
                     location_name varchar(50) NOT NULL,
-                    location_value longtext DEFAULT NULL,
+                    phone varchar(30) DEFAULT NULL,
+                    opening_hours longtext DEFAULT NULL,
                     PRIMARY KEY  (id)
                 ) $charset_collate;";
         
@@ -50,17 +51,16 @@
             $value = json_decode($request->get_body());
             
             $location_name = $value->location_name;
-            $location_value = array(
-                'phone' => $value->location_phone,
-                'opening_hours' => $value->opening_hours,
-            );
-            
+            $phone = $value->location_phone;
+            $opening_hours = $value->opening_hours;
+
             $table_name = $wpdb->prefix . 'page_harvester';
             $wpdb->insert(
                 $table_name, 
                 array( 
                     'location_name' => $location_name,
-                    'location_value' => json_encode($location_value)
+                    'phone' => $phone,
+                    'opening_hours' => $opening_hours,
                     ) 
                 );
             return new WP_REST_Response( array( 'message' => 'Location data added successfully.' ), 200 );
