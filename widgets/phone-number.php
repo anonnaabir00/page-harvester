@@ -94,15 +94,24 @@ class PhoneNumber extends Widget_Base {
         $phone = get_post_meta(get_the_ID(), 'ph_phone', true);
 
         if ($phone == null) {
-            $location_data = json_decode(get_post_meta(get_the_ID(), 'ph_location_data', true),true);
-            $phone = $location_data['phone'];
+            $phone_number_group = get_post_meta(get_the_ID(), 'ph_location_data', true);
+            $phone = $phone_number_group;
         }
 
         if (strpos($_SERVER['REQUEST_URI'], 'elementor') !== false ) {
             $phone = '123-123-1234';
         }
 
-        echo '<p class="ph-phone">'.$before_text.$phone.'</p>';
+		$tel_number = str_replace(array('-','(',')',' '),'',$phone);
+
+		?>
+		<div class="ph-phone">
+			<?php echo $before_text; ?>
+			<a href="<?php echo 'tel:'.$tel_number; ?>">
+				<?php echo $phone; ?>
+			</a>
+		</div>
+		<?php
         
 	}
 }
