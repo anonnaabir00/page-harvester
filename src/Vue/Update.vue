@@ -32,6 +32,8 @@ export default({
 
             var url = `/wp-json/ph/v1/porta-potty/geo/update-meta/${postID}`;
 
+            console.log(locationData)
+
             axios({
                 method: 'post',
                 url: url,
@@ -40,7 +42,7 @@ export default({
                     state: stateValue,
                     cityinfo: cityinfoValue,
                     phone: phoneValue,
-                    // locationdata: locationData,
+                    locationdata: locationData,
                 }
             }).then (response => {
                 console.log(response.data);

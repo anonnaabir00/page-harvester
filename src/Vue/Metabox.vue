@@ -19,19 +19,12 @@
 
             <div class="grid grid-cols-1">
                 <label for="">Phone Number Group</label>
-                <select v-model="value" class="mt-2" @change="getVal">
-                <option value="" disabled selected>Select</option>
-                <option v-for="(option, index) in options" :key="option.location_name" :value="option.location_value">
-                    {{ option.location_name }}
-                </option>
-                </select>
-
                 <vs-select filter placeholder="Select" v-model="value" class="mt-2">
-                    <vs-option v-for="(option, index) in options" :key="option.id" :label="option.location_name" :value="option.location_value">
+                    <vs-option v-for="(option, index) in options" :key="option.id" :label="option.location_name" :value="option.phone">
                     {{ option.location_name }}
                     </vs-option>
                 </vs-select>
-                <input id="ph_location_data" type="hidden" v-model="locationdata">
+                <input id="ph_location_data" type="hidden" v-model="value">
             </div>
         </div>
 
@@ -64,7 +57,7 @@ export default({
     data() {
         return {
             options: ph_postmeta.location_data,
-            value: '',
+            value: ph_postmeta.data.location_data,
             location: ph_postmeta.data.location,
             state: ph_postmeta.data.state,
             phone: ph_postmeta.data.phone,
@@ -73,7 +66,7 @@ export default({
         }
     },
     mounted() {
-        console.log(this.value)
+        console.log(ph_postmeta.data.location_data)
     },
     methods: {
         getVal(event){
