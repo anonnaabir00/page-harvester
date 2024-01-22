@@ -82,7 +82,7 @@ methods: {
             });
 
             var url = '/wp-json/ph/v1/dumpster/geo';
-            var content = '[elementor-template id="38434"]';
+            var content = '[elementor-template id="7627"]';
 
             axios({
             method: 'post',
