@@ -19,11 +19,17 @@
                 </vs-select>
                 </div>
 
-                <label for="placeholder">Phone Number Placeholder</label>
-                <input v-model="placeholder" name="placeholder" placeholder="(469) 281-6668" type="text">
+                <div class="w-full">
+                <label for="state">Location (For Phone Number Group)</label>
+                <vs-select filter placeholder="Select" v-model="phonegroup" class="mt-2">
+                    <vs-option v-for="(option, index) in locations" :key="option.id" :label="option.location_name" :value="option.phone">
+                    {{ option.location_name }}
+                    </vs-option>
+                </vs-select>
+                </div>
 
                 <label for="phone">Phone Number</label>
-                <input v-model="phone" name="phone" placeholder="4692816668" type="text">
+                <input v-model="phone" name="phone" placeholder="(469) 281-6668" type="text">
 
                 <label for="information">City Information</label>
                 <textarea v-model="information" name="information" rows="6" cols="50"></textarea>
@@ -64,6 +70,8 @@ data() {
         schema: null,
         value: '',
         options: optionsData,
+        locations: ph_postmeta.location_data,
+        phonegroup: ''
     }
 },
 methods: {
@@ -74,7 +82,7 @@ methods: {
             });
 
             var url = '/wp-json/ph/v1/porta-potty/geo';
-            var content = '<!-- wp:shortcode -->[elementor-template id="9087"]<!-- /wp:shortcode -->';
+            var content = '[elementor-template id="9087"]';
 
             axios({
             method: 'post',
@@ -84,6 +92,8 @@ methods: {
                 post_content: content,
                 location: this.city + ' ' + this.zip,
                 state: this.value,
+                phone: this.phone,
+                phonegroup: this.phonegroup,
                 information: this.information,
                 schema: this.schema,
             }
