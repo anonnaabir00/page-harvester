@@ -27,12 +27,15 @@ export default({
             const stateValue = document.getElementById('ph_state').value;
             const phoneValue = document.getElementById('ph_phone').value;
             const cityinfoValue = document.getElementById('ph_cityinfo').value;
+            const adwordsCode = document.getElementById('ph_adwords_code').value;
+            const adwordsPhone = document.getElementById('ph_adwords_phone_code').value;
+            const schemaCode = document.getElementById('ph_schema_code').value;
 
             const locationData = document.getElementById('ph_location_data').value;
 
-            var url = `/wp-json/ph/v1/porta-potty/geo/update-meta/${postID}`;
+            var url = `/wp-json/ph/v1/update-meta/${postID}`;
 
-            console.log(locationData)
+            // console.log(locationData)
 
             axios({
                 method: 'post',
@@ -43,9 +46,12 @@ export default({
                     cityinfo: cityinfoValue,
                     phone: phoneValue,
                     locationdata: locationData,
+                    adwords: adwordsCode,
+                    adwordsphone: adwordsPhone,
+                    schema: schemaCode,
                 }
             }).then (response => {
-                console.log(response.data);
+                // console.log(response.data);
                 Swal.fire({
                 title: "Good job!",
                 text: `Post Updated Sucessfully`,

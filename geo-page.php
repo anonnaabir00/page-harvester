@@ -13,20 +13,13 @@
         }
 
         public function __construct(){
-            add_action('use_block_editor_for_post_type', array( $this,'disable_gutenberg'));
             add_action('init', array( $this,'remove_common_features'));
             add_action( 'init', array( $this, 'ph_porta_potty_post_type' ) );
             add_action( 'add_meta_boxes', array( $this, 'ph_additional_info_metabox' ) );
-            add_action( 'the_content', array( $this, 'load_default_content' ) );
-        }
-
-        public function disable_gutenberg($post_type) {
-            if ($post_type === 'post') {
-                return false;
-            }
         }
 
         public function remove_common_features() {
+            remove_post_type_support('page', 'editor');
             remove_post_type_support('post', 'editor');
             remove_post_type_support('post', 'excerpt');
             remove_post_type_support('post', 'thumbnail');
@@ -84,11 +77,12 @@
 
         public function ph_additional_info_metabox() {
             add_meta_box(
-                'ph_additional_info',
+                'ph_additional_information',
                 'Additional Information',
                 array( $this, 'ph_additional_info_metabox_callback' ),
                 array(
                     'post',
+                    'page',
                     'porta_potty_geo_page',
                 ),
                 'advanced',

@@ -35,9 +35,20 @@
             </div>
 
             <div class="grid grid-cols-1">
-                <label for="">Map Code</label>
-                <textarea class="mt-2 text-black" rows="10" cols="50" id="ph_mapcode"></textarea>
+                <label for="">Adwords Code (Main Area)</label>
+                <textarea v-model="adwords" class="mt-2 text-black" rows="10" cols="50" id="ph_adwords_code"></textarea>
             </div>
+
+            <div class="grid grid-cols-1">
+                <label for="">Adwords Code (Phone Number)</label>
+                <textarea v-model="adwordsphone" class="mt-2 text-black" rows="10" cols="50" id="ph_adwords_phone_code"></textarea>
+            </div>
+
+            <div class="grid grid-cols-1">
+                <label for="">Schema Code</label>
+                <textarea v-model="schema" class="mt-2 text-black" rows="10" cols="50" id="ph_schema_code"></textarea>
+            </div>
+
         </div>
 
 </div>
@@ -56,17 +67,20 @@ export default({
     name: 'MetaBox',
     data() {
         return {
-            options: ph_postmeta.location_data,
-            value: ph_postmeta.data.location_data,
-            location: ph_postmeta.data.location,
-            state: ph_postmeta.data.state,
-            phone: ph_postmeta.data.phone,
-            cityinfo: ph_postmeta.data.city_information,
+            options: ph_postmeta.location_data ?? '',
+            value: ph_postmeta.data.location_data ?? '',
+            location: ph_postmeta.data.location ?? '',
+            state: ph_postmeta.data.state ?? '',
+            phone: ph_postmeta.data.phone ?? '',
+            cityinfo: ph_postmeta.data.city_information ?? '',
+            adwords: ph_postmeta.data.adwords_code ?? '',
+            adwordsphone: ph_postmeta.data.adwords_phone_code ?? '',
+            schema: ph_postmeta.data.schema_code ?? '',
             locationdata: [],
         }
     },
     mounted() {
-        console.log(ph_postmeta.data.location_data)
+        
     },
     methods: {
         getVal(event){

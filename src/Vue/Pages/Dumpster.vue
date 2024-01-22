@@ -7,14 +7,20 @@
                     <label for="city">City State</label>
                     <input v-model="city" name="city" placeholder="Desoto TX" type="text" />
 
-                    <label for="placeholder">Phone Number Placeholder</label>
-                    <input v-model="placeholder" name="placeholder" placeholder="(469) 281-6668" type="text">
+                    <div class="w-full">
+                    <label for="state">Location (For Phone Number Group)</label>
+                    <vs-select filter placeholder="Select" v-model="phonegroup" class="mt-2">
+                        <vs-option v-for="(option, index) in locations" :key="option.id" :label="option.location_name" :value="option.phone">
+                        {{ option.location_name }}
+                        </vs-option>
+                    </vs-select>
+                    </div>
 
-                    <label for="phone">Phone Number</label>
-                    <input v-model="phone" name="phone" placeholder="4692816668" type="text">
+                    <label for="phone">Phone Number (Static)</label>
+                    <input v-model="phone" name="phone" placeholder="(469) 281-6668" type="text">
 
                     <label for="phoneads">Adword Code (Phone Number)</label>
-                    <textarea v-model="phoneads" name="phoneads" rows="4" cols="50"></textarea>
+                    <textarea v-model="adwordsphone" name="adwordsphone" rows="4" cols="50"></textarea>
 
                     <button @click="this.addDumpsterPost" class="p-6 brand-color text-white text-base">Generate Dumpster Ads Page</button>
                 </div>
@@ -40,20 +46,21 @@ export default({
     data() {
         return {
             city: null,
-            placeholder: null,
             phone: null,
-            phoneads: null,
+            adwordsphone: null,
+            locations: ph_postmeta.location_data,
+            phonegroup: ''
         }
     },
     methods: {
         addDumpsterPost(){
-            if (this.city && this.placeholder && this.phone && this.phoneads != null) {
+            if (this.city && this.adwordsphone != null) {
                 const loading = this.$vs.loading({
                 text: 'Creating Dumpster Ads Page...'
                 });
 
                 var url = '/wp-json/ph/v1/dumpster/ads';
-                var content = '<!-- wp:shortcode -->[elementor-template id="5364"]<!-- /wp:shortcode -->';
+                var content = '[elementor-template id="5364"]';
 
                 axios({
                 method: 'post',
@@ -61,10 +68,10 @@ export default({
                 data: {
                     post_title: 'Dumpster Rental in ' +  this.city,
                     post_content: content,
-                    city: this.city,
-                    placeholder: this.placeholder,
+                    location: this.city,
                     phone: this.phone,
-                    phoneads: this.phoneads,
+                    adwordsphone: this.adwordsphone,
+                    phonegroup: this.phonegroup,
                 }
             }).then (response => {
                 loading.close();
