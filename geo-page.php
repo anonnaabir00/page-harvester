@@ -13,9 +13,27 @@
         }
 
         public function __construct(){
-            // add custom post type
+            add_action('init', array( $this,'remove_common_features'));
             add_action( 'init', array( $this, 'ph_porta_potty_post_type' ) );
+            add_action( 'add_meta_boxes', array( $this, 'ph_additional_info_metabox' ) );
         }
+
+        public function remove_common_features() {
+            remove_post_type_support('page', 'editor');
+            remove_post_type_support('post', 'editor');
+            remove_post_type_support('post', 'excerpt');
+            remove_post_type_support('post', 'thumbnail');
+            remove_post_type_support('post', 'comments');
+        }
+
+        public function load_default_content($content) {
+            if (is_singular('post') OR is_singular('porta_potty_geo_page')) {
+                $shortcode_output = do_shortcode('[elementor-template id="38434"]');
+                $content .= $shortcode_output;
+            }
+        
+            return $content;
+        } 
 
         public function ph_porta_potty_post_type() {
             // create porta potty custom post type
@@ -44,7 +62,7 @@
                     'capability_type' => 'post',
                     'hierarchical' => false,
                     'rewrite' => array('slug' => 'porta-potty'),
-                    'supports' => array( 'title', 'editor', 'elementor'),
+                    'supports' => array( 'title', 'elementor'),
                     'show_in_rest' => true,
                     'menu_position' => 5,
                     'menu_icon' => 'dashicons-location',
@@ -55,6 +73,27 @@
                     'rest_controller_class' => 'WP_REST_Posts_Controller',
                 )
             );
+        }       
+
+        public function ph_additional_info_metabox() {
+            add_meta_box(
+                'ph_additional_information',
+                'Additional Information',
+                array( $this, 'ph_additional_info_metabox_callback' ),
+                array(
+                    'post',
+                    'page',
+                    'porta_potty_geo_page',
+                ),
+                'advanced',
+                'high'
+            );
+        }
+
+        public function ph_additional_info_metabox_callback($post) {
+            ?>
+            <div id="ph-additional-info"></div>
+            <?php
         }
 
     }
