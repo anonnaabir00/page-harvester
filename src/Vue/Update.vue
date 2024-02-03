@@ -1,7 +1,7 @@
 <template>
     <div class="mb-4">
             <div class="flex justify-start w-full">
-                <button @click.prevent="updatePost" class="bg-green-700 text-white mb-4 pl-6 pr-6 p-3 w-full">Update Post</button>
+                <button @click="updatePost" class="bg-green-700 text-white mb-4 pl-6 pr-6 p-3 w-full">Update Post</button>
             </div>
     </div>
 </template>
