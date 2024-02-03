@@ -8,6 +8,7 @@ import PortaPotty from './Vue/Pages/PortaPotty.vue';
 import DumpsterGEO from './Vue/Pages/DumpsterGEO.vue';
 import PortaPottyGEO from './Vue/Pages/PortaPottyGEO.vue';
 import LocationData from './Vue/Pages/LocationData.vue';
+import Settings from './Vue/Pages/Settings.vue';
 import Export from './Vue/Pages/Export.vue';
 
 import Metabox from './Vue/Metabox.vue';
@@ -21,6 +22,7 @@ const routes = [
     { path: '/dumpster-geo', component: DumpsterGEO },
     { path: '/porta-potty-geo', component: PortaPottyGEO },
     { path: '/location-data', component: LocationData },
+    { path: '/settings', component: Settings },
     { path: '/export', component: Export },
 ]
 
