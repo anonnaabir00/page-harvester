@@ -24,6 +24,7 @@
 
             $current_screen = get_current_screen();
             $admin_screen = 'toplevel_page_page_harvester';
+            $enable_yoast_support = get_option('ph_enable_yoast');
 
             $post_id = get_the_ID(  );
             $post = get_post($post_id);
@@ -45,8 +46,19 @@
 
             $location_data = $wpdb->get_results("SELECT * FROM $table_name", ARRAY_A);
 
+            if ($admin_screen == $current_screen->base){
+                wp_enqueue_style( 'app', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/app.css' );
+                wp_enqueue_style( 'main', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/admin.css' );
+                wp_enqueue_script( 'admin', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/admin.js', [], '8.0', true );
+                wp_localize_script( 'admin', 'ph_settings',
+                    array( 
+                        'enable_yoast_support' => $enable_yoast_support ? $enable_yoast_support : false
+                    )
+                );
+            }
 
-            if ($admin_screen == $current_screen->base OR $post->post_type == 'post' OR $post->post_type == 'page' OR $post->post_type == 'porta_potty_geo_page') {
+
+            if ($post->post_type === 'post' && $enable_yoast_support === '' OR $post->post_type === 'page' && $enable_yoast_support === '' OR $post->post_type === 'porta_potty_geo_page' && $enable_yoast_support === '') {
                 wp_enqueue_style( 'app', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/app.css' );
                 wp_enqueue_style( 'main', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/admin.css' );
                 wp_enqueue_script( 'admin', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/admin.js', [], '8.0', true );
@@ -128,6 +140,14 @@
                   'page_harvester#/export',
                   array( $this,'ph_settings_content' ) 
               );
+
+              add_submenu_page( 
+                $slug, __( 'Page Harvester Settings', 'page-harvester' ), 
+                __( 'Settings', 'page-harvester' ),
+                $capability,
+                'page_harvester#/settings',
+                array( $this,'ph_settings_content' ) 
+            );
 
         }
     
