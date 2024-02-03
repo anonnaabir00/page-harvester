@@ -22,6 +22,11 @@
                 'methods' => 'POST',
                 'callback' => array( $this, 'ph_update_post_meta' ),
             ));
+
+            register_rest_route( 'ph/v1', '/save-settings', array(
+                'methods' => 'POST',
+                'callback' => array( $this, 'ph_save_settings' ),
+            ));
         }
 
         public function ph_update_post_meta(WP_REST_Request $request){
@@ -49,6 +54,17 @@
             $post_url = get_permalink($post_id);
         
             return $post_url;
+        }
+
+        public function ph_save_settings(WP_REST_Request $request){
+            $value = json_decode($request->get_body());
+
+            $enable_yoast = $value->enableyoast;
+            
+            // Update Option Meta
+            update_option('ph_enable_yoast', $enable_yoast);
+        
+            return true;
         }
     
     }
